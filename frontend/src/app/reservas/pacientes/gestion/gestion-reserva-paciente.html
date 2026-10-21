@@ -1,0 +1,74 @@
+<p-dialog 
+    [(visible)]="visible" 
+    [header]="'Reservar Turno Médico'" 
+    [modal]="true" 
+    [style]="{ width: '35rem' }" 
+    [draggable]="false"
+    [resizable]="false"
+    (onHide)="cerrar()">
+
+    <div class="flex flex-column gap-4 py-3">
+        <!-- Selección de Médico -->
+        <div class="flex flex-column gap-2">
+            <label class="font-semibold">Médico</label>
+            <p-select 
+                [options]="medicos()" 
+                [(ngModel)]="medicoSeleccionado" 
+                optionLabel="apellidos" 
+                placeholder="Seleccione un médico"
+                (onChange)="onMedicoOFechaChange()"
+                styleClass="w-full">
+                <ng-template let-medico #item>
+                    Dr/a. {{ medico.apellidos }}, {{ medico.nombres }} (Valor: ${{ medico.valorConsulta }})
+                </ng-template>
+                <ng-template let-medico #selectedItem>
+                    @if (medico) {
+                        Dr/a. {{ medico.apellidos }}, {{ medico.nombres }}
+                    }
+                </ng-template>
+            </p-select>
+        </div>
+
+        <!-- Selección de Fecha (Máximo 30 días) -->
+        <div class="flex flex-column gap-2">
+            <label class="font-semibold">Fecha de Consulta</label>
+            <p-datepicker 
+                [(ngModel)]="fechaSeleccionada" 
+                [minDate]="fechaMinima" 
+                [maxDate]="fechaMaxima"
+                dateFormat="dd/mm/yy" 
+                [readonlyInput]="true"
+                placeholder="Seleccione la fecha"
+                (onSelect)="onMedicoOFechaChange()"
+                styleClass="w-full">
+            </p-datepicker>
+        </div>
+
+        <!-- Grilla de Horarios (8hs a 15hs) -->
+        @if (medicoSeleccionado() && fechaSeleccionada()) {
+            <div class="flex flex-column gap-2">
+                <label class="font-semibold">Horarios Disponibles</label>
+                <div class="grid grid-nogutter gap-2">
+                    @for (h of horasDisponibles; track h) {
+                        @let ocupado = horariosOcupados().includes(h);
+                        @let seleccionado = horaSeleccionada() === h;
+                        <p-button 
+                            [label]="h" 
+                            [severity]="ocupado ? 'secondary' : (seleccionado ? 'success' : 'secondary')"
+                            [outlined]="!seleccionado"
+                            [disabled]="ocupado"
+                            (click)="horaSeleccionada.set(h)">
+                        </p-button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <ng-template #footer>
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Cancelar" severity="secondary" [outlined]="true" (click)="cerrar()"></p-button>
+            <p-button label="Confirmar Reserva" [loading]="guardando()" (click)="guardar()"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

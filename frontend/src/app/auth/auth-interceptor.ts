@@ -19,7 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       // Un 401 fuera del login significa que el token venció o no es válido
       const esLogin = req.url.includes('/auth/login');
       if (error.status === 401 && !esLogin) {
-        authStore.logout();
+        authStore.cerrarSesion();
         router.navigate(['/login']);
       }
       return throwError(() => error);

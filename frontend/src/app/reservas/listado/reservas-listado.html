@@ -1,0 +1,83 @@
+<app-template>
+    <!-- Barra superior unificada: Pestañas a la izquierda y Botón de acción dinámico a la derecha exactamente a la misma altura -->
+    <div class="flex justify-content-between align-items-center mb-4 flex-wrap gap-3" style="min-height: 48px;">
+        <!-- Pestañas de navegación -->
+        <div class="flex gap-2">
+            <p-button 
+                label="Reservas" 
+                [severity]="vistaActual() === 'reservas' ? 'primary' : 'secondary'"
+                [outlined]="vistaActual() !== 'reservas'"
+                icon="pi pi-calendar" 
+                (click)="cambiarVista('reservas')">
+            </p-button>
+            <p-button 
+                label="Médicos" 
+                [severity]="vistaActual() === 'medicos' ? 'primary' : 'secondary'"
+                [outlined]="vistaActual() !== 'medicos'"
+                icon="pi pi-users" 
+                (click)="cambiarVista('medicos')">
+            </p-button>
+        </div>
+
+        <!-- Acciones dinámicas de la vista actual (Se alternan en el mismo slot derecho estático) -->
+        <div class="flex align-items-center gap-2">
+            @if (vistaActual() === 'reservas') {
+                <p-button id="boton-crear-reserva" icon="pi pi-plus" label="Nueva Reserva" (click)="crearReserva()" />
+            }
+
+        </div>
+    </div>
+
+    <!-- Vista 1: Tabla de Reservas -->
+    @if (vistaActual() === 'reservas') {
+        <p-table id="tabla-reservas" [value]="reservas()" [tableStyle]="{ 'min-width': '50rem'}" [paginator]="true" [rows]="7"
+            scrollHeight="70vh">
+            <ng-template #header>
+                <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Paciente</th>
+                    <th>Médico</th>
+                    <th>Estado</th>
+                    <th>Valor Consulta</th>
+                    <th>Acciones</th>
+                </tr>
+            </ng-template>
+            
+            <ng-template #body let-reserva>
+                <tr>
+                    <td>{{ reserva.fechaHora | date:'dd/MM/yyyy - HH:mm'}} hs</td>
+                    <td>{{ reserva.paciente.nombres }} {{ reserva.paciente.apellidos }}</td>
+                    <td>Dr. {{ reserva.medico.nombres }} {{ reserva.medico.apellidos }}</td>
+                    <td>{{ reserva.estado }}</td>
+                    <td>$ {{ reserva.valorConsulta }}</td>
+                    <td>
+                        <div class="flex gap-2">
+                            @if (reserva.estado === 'ACTIVO') {
+                                <p-button icon="pi pi-ban" pTooltip="Cancelar Turno" severity="danger"
+                                    (click)="cancelarReserva(reserva.id)"></p-button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="6" class="text-center p-4">No se encontraron reservas registradas.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    }
+
+    <!-- Vista 2: Componente independiente de Médicos -->
+    @if (vistaActual() === 'medicos') {
+        <app-medicos-listado></app-medicos-listado>
+    }
+
+    <app-reservas-gestion 
+        [(visible)]="dialogVisible"
+        [(reservaSeleccionada)]="reservaSeleccionada"
+        (reservaGuardada)="refrescarReservas()">
+    </app-reservas-gestion>
+
+</app-template>

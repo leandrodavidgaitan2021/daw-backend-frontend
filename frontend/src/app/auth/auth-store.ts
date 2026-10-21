@@ -1,6 +1,9 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, signal, inject } from '@angular/core';
+import { Router } from "@angular/router";
+import { RolUsuario } from './roles.enum';
 
-export type Rol = 'MEDICO' | 'PACIENTE' | 'ADMINISTRADOR';
+export type Rol = RolUsuario;
+
 export interface Usuario {
   id: number | string;
   nombres?: string;
@@ -14,9 +17,11 @@ export interface Usuario {
   providedIn: 'root'
 })
 export class AuthStore {
+
+  private readonly router: Router = inject(Router)
   // Estado privado con Signals
   private readonly _user = signal<Usuario | null>(this.getUserFromStorage());
-  private readonly _token = signal<string | null>(localStorage.getItem('token'));
+  private readonly _token = signal<string | null>(sessionStorage.getItem('token'));
 
   // Propiedades públicas de solo lectura
   readonly usuario = this._user.asReadonly();
@@ -30,8 +35,8 @@ export class AuthStore {
    * Establece la sesión del usuario guardando el token y sus datos
    */
   setSession(token: string, user: Usuario): void {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('user', JSON.stringify(user));
     this._token.set(token);
     this._user.set(user);
   }
@@ -39,23 +44,24 @@ export class AuthStore {
   /**
    * Cierra la sesión limpiando el almacenamiento y reseteando las señales
    */
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+  cerrarSesion(): void {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     this._token.set(null);
     this._user.set(null);
+    this.router.navigateByUrl("/login");
   }
 
   /**
-   * Recupera el usuario almacenado en localStorage al iniciar
+   * Recupera el usuario almacenado en sessionStorage al iniciar
    */
   private getUserFromStorage(): Usuario | null {
-    const userStr = localStorage.getItem('user');
+    const userStr = sessionStorage.getItem('user');
     if (userStr) {
       try {
         return JSON.parse(userStr);
       } catch (e) {
-        console.error('Error al parsear el usuario del localStorage', e);
+        console.error('Error al parsear el usuario del sessionStorage', e);
         return null;
       }
     }

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { EstadosReservas } from '../reservas/estados-reservas-enum';
 
-export type EstadoReserva = 'ACTIVO' | 'ATENDIDO' | 'AUSENTE' | 'CANCELADO';
+
 export interface Medico {
   id: number;
   matricula: number;
@@ -14,7 +15,7 @@ export interface Medico {
 export interface Reserva {
   id: number;
   fechaHora: string;
-  estado: EstadoReserva;
+  estado: EstadosReservas;
   valorConsulta: number;
   paciente: { id: number; nombres: string; apellidos: string; documento: string; email: string };
   medico: { id: number; matricula: number; valorConsulta: number; nombres: string; apellidos: string };

@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { MessageService } from 'primeng/api';
-import { AuthStore } from '../../auth/auth-store';
+import { AuthStore } from '../../../auth/auth-store';
 import { mensajeDeError } from '../../shared/mensaje-error';
 import { MedicoApiClient, MedicoResponse } from '../../shared/medico-api-client';
 

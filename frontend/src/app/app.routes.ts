@@ -1,39 +1,33 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home';
-import { MedicoTurnosComponent } from './pages/medico/medico-turnos';
-import { MisTurnosComponent } from './pages/paciente/mis-turnos';
-import { ReservarTurnoComponent } from './pages/paciente/reservar-turno';
 import { LoginComponent } from './auth/login/login';
-import { rolGuard } from './auth/auth-guard';
+import { ReservasListado } from './reservas/listado/reservas-listado';
+import { PacientesListado } from './reservas/pacientes/listado/pacientes-listado';
+import { MedicosTurnos } from './reservas/medicos/listado/medicos-turnos';
+import { authGuard } from './auth/auth-guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-
-  {
-    path: 'medico/turnos',
-    component: MedicoTurnosComponent,
-    canActivate: [rolGuard(['MEDICO'])],
+  
+  // Ruta para Administradores / Médicos (según corresponda)
+  { 
+    path: 'reservas', 
+    component: ReservasListado, 
+    canActivate: [authGuard] 
   },
 
-  {
-    path: 'paciente/mis-turnos',
-    component: MisTurnosComponent,
-    canActivate: [rolGuard(['PACIENTE'])],
+  // Nueva ruta exclusiva para el flujo de Pacientes
+  { 
+    path: 'pacientes/reservas', 
+    component: PacientesListado, 
+    canActivate: [authGuard] 
   },
 
-  {
-    path: 'paciente/reservar',
-    component: ReservarTurnoComponent,
-    canActivate: [rolGuard(['PACIENTE'])],
+  // Dentro de las rutas:
+  { 
+    path: 'medicos/turnos', 
+    component: MedicosTurnos, 
+    canActivate: [authGuard] 
   },
 
-  // NUEVA RUTA PARA ADMINISTRADOR (Reutiliza el mismo componente de reserva)
-  {
-    path: 'admin/reservar',
-    component: ReservarTurnoComponent,
-    canActivate: [rolGuard(['ADMINISTRADOR'])],
-  },
-
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'login' }
 ];

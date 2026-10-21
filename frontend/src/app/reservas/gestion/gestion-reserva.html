@@ -1,0 +1,172 @@
+<p-dialog 
+    [header]="header()" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [style]="{ width: '56rem', 'max-height': '90vh' }" 
+    [contentStyle]="{ 'overflow-y': 'auto', 'max-height': '70vh', 'padding': '1rem' }"
+    [draggable]="false" 
+    [resizable]="false"
+    (onHide)="cerrarDialog()">
+
+  <div class="p-fluid">
+    <form (ngSubmit)="guardarReserva()">
+
+      <!-- SI ES ADMINISTRADOR: Selección / Búsqueda de Paciente -->
+      @if (esAdministrador()) {
+        <div class="field mb-3">
+          <label for="paciente" class="block font-medium mb-1 text-sm">Paciente</label>
+          <p-select
+            inputId="paciente"
+            [options]="pacientes()"
+            optionLabel="apellidos"
+            optionValue="id"
+            [ngModel]="pacienteSeleccionado()"
+            (ngModelChange)="pacienteSeleccionado.set($event)"
+            name="paciente"
+            placeholder="Buscá por DNI, apellido o nombre"
+            [filter]="true"
+            filterBy="documento,apellidos,nombres"
+            [showClear]="true"
+            [loading]="cargandoPacientes()"
+            [disabled]="cargandoPacientes()"
+            class="w-full"
+            [fluid]="true">
+
+            <ng-template #item let-paciente>
+              {{ paciente.apellidos }}, {{ paciente.nombres }} — DNI: {{ paciente.documento }}
+            </ng-template>
+
+            <ng-template #selectedItem let-paciente>
+              @if (paciente) {
+                {{ paciente.apellidos }}, {{ paciente.nombres }} (DNI: {{ paciente.documento }})
+              }
+            </ng-template>
+          </p-select>
+
+          @if (!cargandoPacientes() && pacientes().length === 0) {
+            <p class="text-600 text-xs mt-1">No hay pacientes activos disponibles.</p>
+          }
+        </div>
+      }
+
+      <!-- Médico -->
+      <div class="field mb-3">
+        <label for="medico" class="block font-medium mb-1 text-sm">Médico</label>
+        <p-select
+          inputId="medico"
+          [options]="medicos()"
+          optionLabel="apellidos"
+          optionValue="id"
+          [ngModel]="medicoSeleccionado()"
+          (ngModelChange)="cambioMedico($event)"
+          name="medico"
+          placeholder="Seleccioná un médico"
+          [showClear]="true"
+          [loading]="cargandoMedicos()"
+          [disabled]="cargandoMedicos()"
+          class="w-full"
+          [fluid]="true">
+
+          <ng-template #item let-medico>
+            {{ medico.nombres }} {{ medico.apellidos }} — Mat. {{ medico.matricula }} — ${{ medico.valorConsulta | number }}
+          </ng-template>
+
+          <ng-template #selectedItem let-medico>
+            @if (medico) {
+              {{ medico.nombres }} {{ medico.apellidos }} — ${{ medico.valorConsulta | number }}
+            }
+          </ng-template>
+        </p-select>
+
+        @if (!cargandoMedicos() && medicos().length === 0) {
+          <p class="text-600 text-xs mt-1">No hay médicos disponibles para mostrar.</p>
+        }
+      </div>
+
+      <!-- SECCIÓN EN DOS COLUMNAS MÁS COMPACTA -->
+      <div class="grid formgrid mb-2">
+        <!-- Columna Izquierda: Fecha -->
+        <div class="col-12 md:col-6 field mb-3">
+          <label for="fecha" class="block font-medium mb-1 text-sm">Fecha</label>
+          <p-datepicker
+            inputId="fecha"
+            [ngModel]="fechaSeleccionada()"
+            (ngModelChange)="cambioFecha($event)"
+            name="fecha"
+            [minDate]="fechaMinima"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            [readonlyInput]="true"
+            appendTo="body"
+            placeholder="Seleccioná una fecha"
+            class="w-full"
+            [fluid]="true" />
+        </div>
+
+        <!-- Columna Derecha: Horarios Disponibles -->
+        <div class="col-12 md:col-6 field mb-3">
+          <label class="block font-medium mb-1 text-sm">Horario disponible</label>
+          <!-- Contenedor con altura máxima y scroll interno si la lista es larga -->
+          <div class="grid overflow-y-auto" style="max-height: 220px;">
+            @for (hora of horarios; track hora) {
+              <div class="col-6 p-1">
+                <button
+                  type="button"
+                  class="w-full p-1 border-round cursor-pointer text-xs font-semibold transition-colors transition-duration-200"
+                  [disabled]="horarioOcupado(hora) || cargandoDisponibilidad() || !medicoSeleccionado() || !fechaSeleccionada()"
+                  
+                  [class.bg-red-500]="horarioOcupado(hora)"
+                  [class.text-white]="horarioOcupado(hora) || horaSeleccionada() === hora"
+                  [class.border-red-500]="horarioOcupado(hora)"
+                  [class.opacity-60]="horarioOcupado(hora)"
+                  [class.cursor-not-allowed]="horarioOcupado(hora) || cargandoDisponibilidad() || !medicoSeleccionado() || !fechaSeleccionada()"
+
+                  [class.bg-green-600]="!horarioOcupado(hora) && horaSeleccionada() === hora"
+                  [class.border-green-600]="!horarioOcupado(hora) && horaSeleccionada() === hora"
+
+                  [class.bg-green-50]="!horarioOcupado(hora) && horaSeleccionada() !== hora"
+                  [class.text-green-800]="!horarioOcupado(hora) && horaSeleccionada() !== hora"
+                  [class.border-green-300]="!horarioOcupado(hora) && horaSeleccionada() !== hora"
+                  [class.border-1]="true"
+
+                  (click)="horaSeleccionada.set(hora)">
+                  
+                  {{ hora }}
+
+                  @if (horarioOcupado(hora)) {
+                    <span class="block text-[10px] font-normal">Ocupado</span>
+                  }
+                  @else {
+                    <span class="block text-[10px] font-normal">Disponible</span>
+                  }
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2 py-1">
+      <p-button
+        label="Cancelar"
+        severity="secondary"
+        [outlined]="true"
+        size="small"
+        (onClick)="cerrarDialog()" />
+
+      <p-button
+        label="Confirmar reserva"
+        icon="pi pi-check"
+        size="small"
+        [loading]="guardando()"
+        (onClick)="guardarReserva()" />
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Diálogo de confirmación nativo de PrimeNG -->
+<p-confirmDialog />

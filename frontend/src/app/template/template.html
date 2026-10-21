@@ -1,0 +1,18 @@
+<header id="header" class="flex justify-content-between align-items-center px-4 py-2 border-bottom-1 surface-border">
+    <h1 id="nombre-de-proyecto" class="m-0 text-xl font-bold">Sistema de Gestión de Clínica</h1>
+    
+    <div class="flex align-items-center gap-3">
+        <!-- Nombre del usuario autenticado -->
+        @if (authStore.usuario(); as user) {
+            <span class="font-medium text-700">
+                👤 {{ user.nombres }} {{ user.apellidos }}
+            </span>
+        }
+
+        <p-button label="Cerrar Sesión" (click)="cerrarSesion()" icon="pi pi-sign-out" severity="secondary" [outlined]="true"></p-button>
+    </div>
+</header>
+
+<div id="content">
+    <ng-content></ng-content>
+</div>

@@ -14,7 +14,7 @@ import {
   Medico,
 } from '../../shared/reservas-api-client';
 import { PacientesApiClient, Paciente } from '../../shared/pacientes-api-client';
-import { AuthStore } from '../../auth/auth-store';
+import { AuthStore } from '../../../auth/auth-store';
 import { mensajeDeError } from '../../shared/mensaje-error';
 
 @Component({

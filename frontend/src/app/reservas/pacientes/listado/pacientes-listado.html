@@ -1,0 +1,62 @@
+<app-template>
+    <div class="flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <h2 class="m-0 text-xl font-bold">Mis Turnos Médicos</h2>
+        <p-button icon="pi pi-plus" label="Reservar Nuevo Turno" (click)="nuevaReserva()"></p-button>
+    </div>
+
+    <p-table [value]="reservas()" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="7" scrollHeight="70vh">
+        <ng-template #header>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Médico</th>
+                <th>Estado</th>
+                <th>Valor Consulta</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </ng-template>
+        
+        <ng-template #body let-reserva>
+            <tr>
+                <td>{{ reserva.fechaHora | date:'dd/MM/yyyy - HH:mm' }} hs</td>
+                <td>Dr. {{ reserva.medico.nombres }} {{ reserva.medico.apellidos }}</td>
+                <td>
+                    <span [ngClass]="{
+                        'text-green-600 font-bold': reserva.estado === 'ACTIVO',
+                        'text-blue-600 font-bold': reserva.estado === 'ATENDIDO',
+                        'text-orange-500 font-bold': reserva.estado === 'AUSENTE',
+                        'text-red-500 font-bold': reserva.estado === 'CANCELADO'
+                    }">
+                        {{ reserva.estado }}
+                    </span>
+                </td>
+                <td>${{ reserva.valorConsulta }}</td>
+                <td class="text-center">
+                    <div class="flex justify-content-center gap-2">
+                        @if (reserva.estado === 'ACTIVO') {
+                            <p-button 
+                                icon="pi pi-ban" 
+                                pTooltip="Cancelar Turno" 
+                                [severity]="puedeCancelar(reserva.fechaHora) ? 'danger' : 'secondary'"
+                                [disabled]="!puedeCancelar(reserva.fechaHora)"
+                                (click)="cancelarReserva(reserva.id, reserva.fechaHora)">
+                            </p-button>
+                        }
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="5" class="text-center p-4">No tienes turnos reservados actualmente.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</app-template>
+
+<!-- Modal compartido de gestión de reservas -->
+<app-reservas-gestion 
+    [(visible)]="dialogVisible"
+    (reservaGuardada)="refrescarReservas()">
+</app-reservas-gestion>
+

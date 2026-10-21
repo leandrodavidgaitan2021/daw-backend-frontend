@@ -4,7 +4,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http'; // <
 
 import { routes } from './app.routes';
 
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 // Importaciones necesarias para PrimeNG
 import { providePrimeNG } from 'primeng/config';
@@ -31,6 +31,7 @@ export const appConfig: ApplicationConfig = {
       },
       ripple: true // Opcional: activa el efecto ripple en botones y componentes
     }),
-    MessageService // <-- Agregamos esto
+    MessageService,       // <-- Proveedor global de mensajes
+    ConfirmationService   // <-- Proveedor global de confirmaciones
   ]
 };
