@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, ModelSignal, output, Signal, signal } from "@angular/core";
+import { Component, computed, inject, model, ModelSignal, output, Signal, signal, effect } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,6 +13,7 @@ import { ReservaResponseDto, MedicoResponseDto, UsuarioResponseDto } from "../li
 import { GestionReservasApiClient } from "./gestion-reserva-api-client";
 import { CrearReservaDTO } from "./crear-reserva-dto";
 import { AuthStore } from "../../auth/auth-store";
+import { ReservaEstadoService } from "../../shared/reserva-estado.service";
 
 @Component({
     selector: "app-reservas-gestion",
@@ -39,6 +40,7 @@ export class GestionReserva {
     private readonly messageService: MessageService = inject(MessageService);
     private readonly confirmationService = inject(ConfirmationService);
     private readonly gestionReservasApiClient = inject(GestionReservasApiClient);
+    private readonly reservaEstadoService = inject(ReservaEstadoService);
     readonly authStore = inject(AuthStore);
 
     private solicitudDisponibilidad = 0;
@@ -63,12 +65,26 @@ export class GestionReserva {
 
     readonly fechaMinima = this.inicioDelDia(new Date());
 
-    ngOnInit(): void {
-        this.cargarMedicos();
-        if (this.esAdministrador()) {
-            this.cargarPacientes();
-        }
+    constructor() {
+        // 1. Efecto automático: Cada vez que se abre el modal, refrescamos médicos y pacientes
+        effect(() => {
+            if (this.visible()) {
+                this.cargarMedicos();
+                if (this.esAdministrador()) {
+                    this.cargarPacientes();
+                }
+            }
+        });
+
+        // 2. Efecto automático: Detecta cambios en el médico o la fecha para recalcular la disponibilidad en tiempo real
+        effect(() => {
+            const idMedico = this.medicoSeleccionado();
+            const fecha = this.fechaSeleccionada();
+
+            this.ejecutarCargaDisponibilidad(idMedico, fecha);
+        });
     }
+
 
     esAdministrador(): boolean {
         return this.authStore.usuario()?.rol === 'ADMINISTRADOR';
@@ -79,7 +95,9 @@ export class GestionReserva {
         this.gestionReservasApiClient.getMedicos().subscribe({
             next: (data) => {
                 this.medicos.set(data);
+                this.reservaEstadoService.notificarCambio();
                 this.cargandoMedicos.set(false);
+
             },
             error: () => {
                 this.cargandoMedicos.set(false);
@@ -105,20 +123,15 @@ export class GestionReserva {
     cambioMedico(id: number | null): void {
         this.medicoSeleccionado.set(id);
         this.horaSeleccionada.set(null);
-        this.cargarDisponibilidad();
     }
 
     cambioFecha(fecha: Date | null): void {
         this.fechaSeleccionada.set(fecha);
         this.horaSeleccionada.set(null);
-        this.cargarDisponibilidad();
     }
 
-    cargarDisponibilidad(): void {
-        const idMedico = this.medicoSeleccionado();
-        const fecha = this.fechaSeleccionada();
+    private ejecutarCargaDisponibilidad(idMedico: number | null, fecha: Date | null): void {
         const solicitud = ++this.solicitudDisponibilidad;
-
         this.horariosOcupados.set([]);
 
         if (idMedico === null || !fecha) {
@@ -220,6 +233,8 @@ export class GestionReserva {
                             summary: '¡Turno Reservado!',
                             detail: 'La reserva se registró correctamente en el sistema.'
                         });
+                        this.reservaEstadoService.notificarCambio();
+
                         this.reservaGuardada.emit(); // Notificamos al componente padre
                         this.cerrarDialog();
                     },

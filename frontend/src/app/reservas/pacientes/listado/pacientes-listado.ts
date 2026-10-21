@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from "@angular/core";
+import { Component, inject, OnInit, signal, WritableSignal, effect } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { MessageService, ConfirmationService } from "primeng/api";
 import { TableModule } from 'primeng/table';
@@ -11,6 +11,7 @@ import { GestionReservasApiClient } from "../../gestion/gestion-reserva-api-clie
 import { Template } from "../../../template/template";
 import { GestionReserva } from "../../gestion/gestion-reserva";
 import { PacientesListadoApiClient } from "./pacientes-listado-api-client";
+import { ReservaEstadoService } from "../../../shared/reserva-estado.service";
 
 @Component({
   selector: "app-pacientes-listado",
@@ -19,19 +20,26 @@ import { PacientesListadoApiClient } from "./pacientes-listado-api-client";
   styleUrls: ["./pacientes-listado.css"],
   imports: [CommonModule, TableModule, ButtonModule, TooltipModule, ConfirmDialogModule, Template, GestionReserva]
 })
-export class PacientesListado implements OnInit {
+export class PacientesListado {
   private readonly messageService = inject(MessageService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly gestionReservasApiClient = inject(GestionReservasApiClient);
   private readonly pacientesListadoApiClient = inject(PacientesListadoApiClient);
+  private readonly reservaEstadoService = inject(ReservaEstadoService);
 
   // Signals del listado de turnos del paciente
   reservas: WritableSignal<ReservaResponseDto[]> = signal([]);
   dialogVisible: WritableSignal<boolean> = signal(false);
-
-  ngOnInit(): void {
-    this.refrescarReservas();
+  constructor() {
+      effect(() => {
+          // Escucha el disparador global
+          this.reservaEstadoService.actualizacionTrigger();
+          
+          // Refresca los datos automáticamente según el componente
+          this.refrescarReservas();
+      });
   }
+
 
   refrescarReservas(): void {
     this.pacientesListadoApiClient.getMisTurnos().subscribe({
@@ -85,6 +93,7 @@ export class PacientesListado implements OnInit {
         this.gestionReservasApiClient.cancelarReserva(id).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Turno cancelado correctamente.' });
+            this.reservaEstadoService.notificarCambio();
             this.refrescarReservas();
           },
           error: (err) => {

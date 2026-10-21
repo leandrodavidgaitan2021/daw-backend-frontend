@@ -1,13 +1,15 @@
 #header {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    height: 10vh;
+    height: 70px; /* Usar una altura fija en píxeles es más seguro que los vh */
     background-color: lightcyan;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 0 1.5rem;
+    z-index: 1000;
 }
 
 #nombre-de-proyecto {
@@ -15,18 +17,17 @@
 }
 
 #content {
-    position: fixed;
-    margin-top: 10vh;
+    /* Quitamos el position: fixed y usamos margin-top basado en la altura del header */
+    margin-top: 10px; 
     width: 100%;
-    height: 90vh;
-    padding: 1rem;
-    overflow: auto;
+    min-height: calc(100vh - 70px);
+    padding: 1rem 1.5rem; /* Reducimos el padding superior si lo deseas */
+    overflow-y: auto;
 }
 
 ::ng-deep .p-button {
     font-size: 0.8rem !important;
 }
-
 
 @media (min-width: 768px) {
     #nombre-de-proyecto {
@@ -36,5 +37,4 @@
     ::ng-deep .p-button {
         font-size: 1rem !important;
     }
-
 }

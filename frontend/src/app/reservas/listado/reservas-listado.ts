@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from "@angular/core";
+import { Component, inject, OnInit, signal, WritableSignal, effect } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { MessageService, ConfirmationService } from "primeng/api";
 import { TableModule } from 'primeng/table';
@@ -12,6 +12,7 @@ import { GestionReservasApiClient } from "../gestion/gestion-reserva-api-client"
 import { Template } from "../../template/template";
 import { GestionReserva } from "../gestion/gestion-reserva";
 import { MedicosListado } from "./medicos-listado";
+import { ReservaEstadoService } from "../../shared/reserva-estado.service";
 
 @Component({
   selector: "app-reservas-listado",
@@ -21,11 +22,12 @@ import { MedicosListado } from "./medicos-listado";
   imports: [CommonModule, TableModule, ButtonModule, TooltipModule, ConfirmDialogModule, Template, GestionReserva, MedicosListado],
   providers: [ConfirmationService] // <-- Proveedor local del servicio de confirmación
 })
-export class ReservasListado implements OnInit {
+export class ReservasListado {
   private readonly messageService = inject(MessageService);
   private readonly confirmationService = inject(ConfirmationService); // <-- Inyección del servicio
   private readonly reservasListadoApiClient = inject(ReservasListadoApiClient);
   private readonly gestionReservasApiClient = inject(GestionReservasApiClient);
+  private readonly reservaEstadoService = inject(ReservaEstadoService);
 
   // Control de la barra de navegación de vistas ('reservas' o 'medicos')
   readonly vistaActual = signal<'reservas' | 'medicos'>('reservas');
@@ -35,9 +37,15 @@ export class ReservasListado implements OnInit {
   dialogVisible: WritableSignal<boolean> = signal(false);
   reservaSeleccionada: WritableSignal<ReservaResponseDto | null> = signal<ReservaResponseDto | null>(null);
 
-  ngOnInit(): void {
-    this.refrescarReservas();
-  }
+  constructor() {
+    effect(() => {
+        // Escucha el disparador global
+        this.reservaEstadoService.actualizacionTrigger();
+        
+        // Refresca los datos automáticamente según el componente
+        this.refrescarReservas();
+    });
+}
 
   cambiarVista(vista: 'reservas' | 'medicos'): void {
     this.vistaActual.set(vista);
@@ -76,7 +84,9 @@ export class ReservasListado implements OnInit {
         this.gestionReservasApiClient.cancelarReserva(id).subscribe({
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reserva cancelada correctamente.' });
+            this.reservaEstadoService.notificarCambio();
             this.refrescarReservas();
+
           },
           error: (err) => {
             const detail = err?.error?.message || 'No se pudo cancelar el turno.';
