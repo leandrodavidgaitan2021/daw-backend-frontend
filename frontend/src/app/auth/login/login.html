@@ -2,7 +2,7 @@
   header="Iniciar Sesión" 
   [(visible)]="visible" 
   [modal]="true" 
-  [style]="{ width: '420px' }" 
+  [style]="{ width: '400px' }" 
   [draggable]="false" 
   [resizable]="false"
   styleClass="p-fluid"
@@ -11,7 +11,7 @@
   <div class="flex flex-column gap-4 p-2">
     <!-- Subtítulo -->
     <p class="text-600 m-0 text-sm line-height-3">
-      Ingresa tus credenciales para acceder al sistema de gestión clínica.
+      Ingresa tus credenciales para acceder al sistema.
     </p>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-column gap-3 w-full">
@@ -44,17 +44,22 @@
           inputStyleClass="w-full"
           placeholder="••••••••"
         ></p-password>
+        
         @if (loginForm.controls.clave.invalid && submitted()) {
-          <small class="text-red-500 font-medium">Ingresa tu contraseña.</small>
+          @if (loginForm.controls.clave.hasError('required')) {
+            <small class="text-red-500 font-medium">Ingresa tu contraseña.</small>
+          } @else if (loginForm.controls.clave.hasError('minlength')) {
+            <small class="text-red-500 font-medium">La contraseña debe tener al menos 8 caracteres.</small>
+          }
         }
       </div>
 
-      <!-- Botones de Acción (Ingresar y Cancelar) -->
-      <div class="flex gap-2 pt-2 w-full">
+    <!-- Botones de Acción (Ingresar y Cancelar) -->
+      <div class="flex justify-content-center gap-2 pt-2 w-full">
         <p-button 
           label="Ingresar" 
           type="submit" 
-          styleClass="w-full py-3 font-bold text-base shadow-2" 
+          styleClass="w-full py-2 font-bold text-base shadow-2" 
           [loading]="isLoading()"
           severity="primary"
         ></p-button>
@@ -62,7 +67,7 @@
           label="Cancelar" 
           type="button" 
           severity="secondary" 
-          styleClass="w-full py-3 font-bold text-base"
+          styleClass="w-full py-2 font-bold text-base"
           (onClick)="onCancel()"
         ></p-button>
       </div>

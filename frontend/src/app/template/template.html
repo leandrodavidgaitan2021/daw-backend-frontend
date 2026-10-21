@@ -1,18 +1,51 @@
-<header id="header" class="flex justify-content-between align-items-center px-4 py-2 border-bottom-1 surface-border">
-    <h1 id="nombre-de-proyecto" class="m-0 text-xl font-bold">Sistema de Gestión de Clínica</h1>
+<header id="header" class="flex justify-content-between align-items-center px-4 py-2 surface-overlay border-bottom-1 surface-border shadow-1 sticky top-0 z-5">
     
+    <!-- Logo / Marca -->
     <div class="flex align-items-center gap-3">
-        <!-- Nombre del usuario autenticado -->
+        <div class="flex align-items-center justify-content-center bg-primary border-round-lg" style="width: 2.5rem; height: 2.5rem;">
+            <i class="pi pi-heart-fill text-white text-xl"></i>
+        </div>
+        <div>
+            <h1 id="nombre-de-proyecto" class="m-0 text-base font-bold text-900 line-height-1">MediCare</h1>
+            <span class="text-xs text-500 font-medium">Gestión Clínica</span>
+        </div>
+    </div>
+    
+    <!-- Sección de Usuario y Acciones -->
+    <div class="flex align-items-center gap-3">
         @if (authStore.usuario(); as user) {
-            <span class="font-medium text-700">
-                👤 {{ user.nombres }} {{ user.apellidos }}
-            </span>
+            <!-- Información del usuario (Estática) -->
+            <div class="flex align-items-center gap-3 px-2 py-1">
+               
+                <!-- Datos del usuario -->
+                <div class="hidden sm:flex flex-column">
+                    <span class="font-semibold text-900 text-sm line-height-1">
+                        {{ user.nombres }} {{ user.apellidos }}
+                    </span>
+                    <span class="text-xs text-500 capitalize line-height-2 mt-1">
+                        {{ user.rol?.toLowerCase() || 'Usuario' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="border-left-1 surface-border h-2rem my-auto mx-1"></div>
         }
 
-        <p-button label="Cerrar Sesión" (click)="cerrarSesion()" icon="pi pi-sign-out" severity="secondary" [outlined]="true"></p-button>
+        <!-- Botón Cerrar Sesión -->
+        <p-button 
+            label="Salir" 
+            (click)="cerrarSesion()" 
+            icon="pi pi-sign-out" 
+            severity="secondary" 
+            [text]="true"
+            styleClass="text-600 hover:text-red-600 font-medium text-sm"
+            pTooltip="Cerrar sesión"
+            tooltipPosition="bottom"
+        ></p-button>
     </div>
 </header>
 
-<div id="content">
+<!-- En lugar de p-4 (padding general grande), usa padding específico -->
+<div id="content" class="px-4 pb-4 pt-2 surface-ground min-h-screen">
     <ng-content></ng-content>
 </div>

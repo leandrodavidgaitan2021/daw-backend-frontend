@@ -16,7 +16,7 @@ import { GestionMedico } from "../gestion/gestion-medico";
     standalone: true,
     templateUrl: "./medicos-listado.html",
     styleUrls: ["./medicos-listado.css"],
-    imports: [CommonModule, TableModule, ButtonModule, TooltipModule, ConfirmDialogModule, Template, GestionMedico],
+    imports: [CommonModule, TableModule, ButtonModule, TooltipModule, ConfirmDialogModule, GestionMedico],
     providers: [ConfirmationService]
 })
 export class MedicosListado implements OnInit {

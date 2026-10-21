@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from "@angular/core";
+import { Component, inject, OnInit, signal, WritableSignal, effect } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from "primeng/api";
@@ -11,6 +11,7 @@ import { ReservaResponseDto } from "../../listado/listado-reservas-dto";
 import { MedicoTurnosApiClient } from "../gestion/medico-turnos-api-client";
 import { Template } from "../../../template/template";
 import { AuthStore } from "../../../auth/auth-store";
+import { ReservaEstadoService } from "../../../shared/reserva-estado.service"; // <-- 1. Importa tu servicio global
 
 @Component({
   selector: "app-medicos-turnos",
@@ -19,18 +20,23 @@ import { AuthStore } from "../../../auth/auth-store";
   templateUrl: "./medicos-turnos.html",
   styleUrls: ["./medicos-turnos.css"]
 })
-export class MedicosTurnos implements OnInit {
+export class MedicosTurnos {
   private readonly messageService = inject(MessageService);
   private readonly medicosTurnosApiClient = inject(MedicoTurnosApiClient);
   private readonly authStore = inject(AuthStore);
+  private readonly reservaEstadoService = inject(ReservaEstadoService); // <-- 2. Inyecta el servicio global
 
   // Fecha seleccionada (por defecto el día de hoy)
   selectedDate: WritableSignal<Date> = signal(new Date());
   turnos: WritableSignal<ReservaResponseDto[]> = signal([]);
   isLoading: WritableSignal<boolean> = signal(false);
 
-  ngOnInit(): void {
-    this.cargarTurnos();
+  constructor() {
+    // 3. Efecto automático: Escucha cambios globales y recarga los turnos del médico
+    effect(() => {
+      this.reservaEstadoService.actualizacionTrigger();
+      this.cargarTurnos();
+    });
   }
 
   // Valida si la fecha seleccionada corresponde al día de hoy para habilitar las acciones
@@ -60,7 +66,7 @@ export class MedicosTurnos implements OnInit {
     const fechaStr = `${anio}-${mes}-${dia}`;
 
     this.isLoading.set(true);
-// Pasamos el id del usuario y la fecha
+    
     this.medicosTurnosApiClient.getTurnosPorFecha(fechaStr).subscribe({
       next: (data) => {
         this.turnos.set(data);
@@ -81,6 +87,9 @@ export class MedicosTurnos implements OnInit {
           summary: 'Estado Actualizado', 
           detail: `El turno fue marcado como ${nuevoEstado.toLowerCase()}.` 
         });
+        
+        // 4. Notificamos al servicio global que hubo una modificación (ej. cambió el estado del turno)
+        this.reservaEstadoService.notificarCambio();
         this.cargarTurnos();
       },
       error: (err) => {
