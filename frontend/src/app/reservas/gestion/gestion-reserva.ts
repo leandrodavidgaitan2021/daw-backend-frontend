@@ -247,6 +247,20 @@ export class GestionReserva {
       return;
     }
 
+    // ─── NUEVA VALIDACIÓN: Máximo 30 días de anticipación ───
+    const maximaFecha = new Date();
+    maximaFecha.setDate(maximaFecha.getDate() + 30);
+
+    if (fechaHora > maximaFecha) {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Anticipación excedida",
+        detail: "No se puede realizar una reserva con más de 30 días de anticipación.",
+      });
+      return;
+    }
+
+
     const medicoObj = this.medicos().find((m) => m.id === medicoId);
     const fechaFormateada = fecha.toLocaleDateString();
 
