@@ -14,13 +14,13 @@ async function bootstrap() {
   const usuarioRepo = app.get<Repository<Usuario>>(getRepositoryToken(Usuario));
   const medicoRepo = app.get<Repository<Medico>>(getRepositoryToken(Medico));
 
-  // Todos los usuarios de prueba comparten la clave 123456
-  const passwordHash = await bcrypt.hash('123456', 10);
+  // Todos los usuarios de prueba comparten la clave 12345678
+  const passwordHash = await bcrypt.hash('12345678', 10);
 
   // Crea el usuario si el email no existe; si existe, lo devuelve sin duplicarlo
   const crearUsuario = async (
     datos: Partial<Usuario> & { email: string },
-  ): Promise<Usuario> => {
+  ): Promise<Usuario> => { 
     const existente = await usuarioRepo.findOne({
       where: { email: datos.email },
     });
