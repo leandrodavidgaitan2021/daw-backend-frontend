@@ -1,10 +1,10 @@
-import { Component, inject, OnInit, signal, WritableSignal, effect } from "@angular/core";
+import { Component, inject, OnInit, signal, WritableSignal, effect, computed, Signal } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { MessageService, ConfirmationService } from "primeng/api";
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from "primeng/button";
 import { TooltipModule } from 'primeng/tooltip';
-import { ConfirmDialogModule } from 'primeng/confirmdialog'; // <-- Importante
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { ReservaResponseDto } from "./listado-reservas-dto";
 import { ReservasListadoApiClient } from "./reservas-listado-api-cliente";
@@ -20,11 +20,11 @@ import { ReservaEstadoService } from "../../shared/reserva-estado.service";
   templateUrl: "./reservas-listado.html",
   styleUrls: ["./reservas-listado.css"],
   imports: [CommonModule, TableModule, ButtonModule, TooltipModule, ConfirmDialogModule, Template, GestionReserva, MedicosListado],
-  providers: [ConfirmationService] // <-- Proveedor local del servicio de confirmación
+  providers: [ConfirmationService]
 })
 export class ReservasListado {
   private readonly messageService = inject(MessageService);
-  private readonly confirmationService = inject(ConfirmationService); // <-- Inyección del servicio
+  private readonly confirmationService = inject(ConfirmationService);
   private readonly reservasListadoApiClient = inject(ReservasListadoApiClient);
   private readonly gestionReservasApiClient = inject(GestionReservasApiClient);
   private readonly reservaEstadoService = inject(ReservaEstadoService);
@@ -32,33 +32,53 @@ export class ReservasListado {
   // Control de la barra de navegación de vistas ('reservas' o 'medicos')
   readonly vistaActual = signal<'reservas' | 'medicos'>('reservas');
 
-  // Signals exclusivas de Reservas
-  reservas: WritableSignal<ReservaResponseDto[]> = signal([]);
+  // Control de filtro interno para la pestaña de reservas: 'proximos' (desde hoy) u 'historial' (pasados)
+  readonly filtroHistorial = signal<'proximos' | 'historial'>('proximos');
+
+  // Signals de Reservas (bruto)
+  private reservasRaw: WritableSignal<ReservaResponseDto[]> = signal([]);
+  
+  // Propiedad computada que filtra dinámicamente según lo que elija el usuario
+  readonly reservas: Signal<ReservaResponseDto[]> = computed(() => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const lista = this.reservasRaw();
+    const filtro = this.filtroHistorial();
+
+    if (filtro === 'proximos') {
+      // Turnos desde hoy en adelante
+      return lista.filter(reserva => new Date(reserva.fechaHora) >= hoy);
+    } else {
+      // Historial: Turnos estrictamente anteriores a hoy
+      return lista.filter(reserva => new Date(reserva.fechaHora) < hoy);
+    }
+  });
+
   dialogVisible: WritableSignal<boolean> = signal(false);
   reservaSeleccionada: WritableSignal<ReservaResponseDto | null> = signal<ReservaResponseDto | null>(null);
 
   constructor() {
     effect(() => {
-        // Escucha el disparador global
         this.reservaEstadoService.actualizacionTrigger();
-        
-        // Refresca los datos automáticamente según el componente
         this.refrescarReservas();
     });
-}
+  }
 
   cambiarVista(vista: 'reservas' | 'medicos'): void {
     this.vistaActual.set(vista);
-    
-    // Si el usuario cambia a la pestaña de reservas, forzamos la búsqueda de inmediato
     if (vista === 'reservas') {
       this.refrescarReservas();
     }
   }
 
+  cambiarFiltroHistorial(filtro: 'proximos' | 'historial'): void {
+    this.filtroHistorial.set(filtro);
+  }
+
   refrescarReservas(): void {
     this.reservasListadoApiClient.getTodas().subscribe({
-      next: (data) => this.reservas.set(data),
+      next: (data) => this.reservasRaw.set(data),
       error: () => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al obtener las reservas' });
       }
@@ -71,7 +91,6 @@ export class ReservasListado {
   }
 
   cancelarReserva(id: number): void {
-    // Cuadro de confirmación nativo de PrimeNG
     this.confirmationService.confirm({
       header: 'Confirmar cancelación',
       message: '¿Estás seguro de que deseas cancelar este turno?',
@@ -86,7 +105,6 @@ export class ReservasListado {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reserva cancelada correctamente.' });
             this.reservaEstadoService.notificarCambio();
             this.refrescarReservas();
-
           },
           error: (err) => {
             const detail = err?.error?.message || 'No se pudo cancelar el turno.';

@@ -204,10 +204,8 @@ export class GestionReserva {
         const medicoObj = this.medicos().find(m => m.id === medicoId);
         const fechaFormateada = fecha.toLocaleDateString();
 
-        // 1. Ocultamos temporalmente el modal de gestión para mostrar la confirmación nativa de PrimeNG
-        this.visible.set(false);
-
-        // 2. Usamos el servicio de confirmación nativo de PrimeNG
+        // 🚨 Quitamos el this.visible.set(false) previo para evitar que se congele el DOM.
+        // Usamos el servicio de confirmación nativo de PrimeNG directamente sobre el modal actual.
         this.confirmationService.confirm({
             header: 'Confirmar reserva',
             message: `¿Deseas confirmar el turno con el/la Dr/a. ${medicoObj?.apellidos} para el día ${fechaFormateada} a las ${hora} hs?`,
@@ -215,7 +213,7 @@ export class GestionReserva {
             acceptLabel: 'Sí, confirmar',
             rejectLabel: 'Cancelar',
             acceptButtonStyleClass: 'p-button-success',
-            rejectButtonStyleClass: 'p-button-danger p-button-text',
+            rejectButtonStyleClass: 'p-button-secondary p-button-text',
             accept: () => {
                 const datos: CrearReservaDTO = {
                     idMedico: medicoId,
@@ -234,14 +232,11 @@ export class GestionReserva {
                             detail: 'La reserva se registró correctamente en el sistema.'
                         });
                         this.reservaEstadoService.notificarCambio();
-
-                        this.reservaGuardada.emit(); // Notificamos al componente padre
-                        this.cerrarDialog();
+                        this.reservaGuardada.emit(); 
+                        this.cerrarDialog(); // Cierra el modal correctamente al terminar
                     },
                     error: (err: HttpErrorResponse) => {
                         this.guardando.set(false);
-                        this.visible.set(true); // Reabrimos el modal si hay error en el backend
-                        
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Error al reservar',
@@ -251,8 +246,7 @@ export class GestionReserva {
                 });
             },
             reject: () => {
-                // Si el usuario cancela la confirmación, reabrimos el diálogo de gestión
-                this.visible.set(true);
+                // Si cancela, el modal principal se queda abierto y listo para seguir editando sin trabarse
             }
         });
     }

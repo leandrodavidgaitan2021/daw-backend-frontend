@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal, effect } from "@angular/core";
+import { Component, inject, signal, WritableSignal, effect, computed, Signal } from "@angular/core";
 import { CommonModule } from '@angular/common';
 import { MessageService, ConfirmationService } from "primeng/api";
 import { TableModule } from 'primeng/table';
@@ -10,7 +10,7 @@ import { ReservaResponseDto } from "../../listado/listado-reservas-dto";
 import { GestionReservasApiClient } from "../../gestion/gestion-reserva-api-client";
 import { Template } from "../../../template/template";
 import { GestionReserva } from "../../gestion/gestion-reserva";
-import { PacientesListadoApiClient } from "./pacientes-listado-api-client";
+import { PacientesListadoApiClient } from "../gestion/pacientes-listado-api-client";
 import { ReservaEstadoService } from "../../../shared/reserva-estado.service";
 
 @Component({
@@ -27,9 +27,28 @@ export class PacientesListado {
   private readonly pacientesListadoApiClient = inject(PacientesListadoApiClient);
   private readonly reservaEstadoService = inject(ReservaEstadoService);
 
-  // Signals del listado de turnos del paciente
-  reservas: WritableSignal<ReservaResponseDto[]> = signal([]);
+  // Control de filtro interno: 'proximos' (desde hoy) u 'historial' (pasados)
+  readonly filtroHistorial = signal<'proximos' | 'historial'>('proximos');
+
+  // Signals del listado (bruto y computado filtrado)
+  private reservasRaw: WritableSignal<ReservaResponseDto[]> = signal([]);
+  
+  readonly reservas: Signal<ReservaResponseDto[]> = computed(() => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const lista = this.reservasRaw();
+    const filtro = this.filtroHistorial();
+
+    if (filtro === 'proximos') {
+      return lista.filter(reserva => new Date(reserva.fechaHora) >= hoy);
+    } else {
+      return lista.filter(reserva => new Date(reserva.fechaHora) < hoy);
+    }
+  });
+
   dialogVisible: WritableSignal<boolean> = signal(false);
+
   constructor() {
       effect(() => {
           // Escucha el disparador global
@@ -40,10 +59,13 @@ export class PacientesListado {
       });
   }
 
+  cambiarFiltroHistorial(filtro: 'proximos' | 'historial'): void {
+    this.filtroHistorial.set(filtro);
+  }
 
   refrescarReservas(): void {
     this.pacientesListadoApiClient.getMisTurnos().subscribe({
-      next: (data) => this.reservas.set(data),
+      next: (data) => this.reservasRaw.set(data),
       error: () => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al obtener sus turnos reservados.' });
       }
@@ -65,10 +87,8 @@ export class PacientesListado {
       const diferenciaMs = fechaTurno.getTime() - hoy.getTime();
       const diasDiferencia = diferenciaMs / (1000 * 60 * 60 * 24);
 
-      // Si diasDiferencia es 0, significa que el turno es HOY. 
-      // Si es menor a 0, el turno ya pasó.
       // Solo permite cancelar si hay 1 o más días de diferencia (hasta el día anterior).
-      return diasDiferencia >= 0;
+      return diasDiferencia >= 1;
   }
 
   cancelarReserva(id: number, fechaHoraStr: string): void {
