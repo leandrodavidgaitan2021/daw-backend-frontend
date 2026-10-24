@@ -89,18 +89,19 @@
         <div class="col-12 md:col-6 field mb-3">
           <label for="fecha" class="block font-medium mb-1 text-sm">Fecha</label>
           <p-datepicker
-            inputId="fecha"
-            [ngModel]="fechaSeleccionada()"
-            (ngModelChange)="cambioFecha($event)"
-            name="fecha"
-            [minDate]="fechaMinima"
-            dateFormat="dd/mm/yy"
-            [showIcon]="true"
-            [readonlyInput]="true"
-            appendTo="body"
-            placeholder="Seleccioná una fecha"
-            class="w-full"
-            [fluid]="true" />
+              inputId="fecha"
+              [ngModel]="fechaSeleccionada()"
+              (ngModelChange)="cambioFecha($event)"
+              name="fecha"
+              [minDate]="fechaMinima"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              [readonlyInput]="true"
+              [showOnFocus]="false"
+              appendTo="body"
+              placeholder="Seleccioná una fecha"
+              class="w-full"
+              [fluid]="true" />
         </div>
 
         <!-- Columna Derecha: Horarios Disponibles -->
