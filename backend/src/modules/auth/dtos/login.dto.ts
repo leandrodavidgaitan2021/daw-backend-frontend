@@ -10,7 +10,7 @@ export class LoginDto {
   email: string;
 
   @ApiProperty({
-    example: '123456',
+    example: '12345678',
     description: 'Contraseña de acceso',
   })
   @IsString()
