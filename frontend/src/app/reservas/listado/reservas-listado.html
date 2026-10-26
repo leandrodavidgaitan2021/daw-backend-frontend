@@ -22,9 +22,27 @@
         <!-- Acciones dinámicas de la vista actual (Se alternan en el mismo slot derecho estático) -->
         <div class="flex align-items-center gap-2">
             @if (vistaActual() === 'reservas') {
+                <!-- Sub-filtros para alternar entre Próximos e Historial -->
+                <div class="flex gap-1 bg-gray-100 p-1 border-round">
+                    <p-button 
+                        label="Próximos" 
+                        icon="pi pi-calendar-plus" 
+                        size="small"
+                        [severity]="filtroHistorial() === 'proximos' ? 'primary' : 'secondary'"
+                        [outlined]="filtroHistorial() !== 'proximos'"
+                        (onClick)="cambiarFiltroHistorial('proximos')" />
+
+                    <p-button 
+                        label="Historial" 
+                        icon="pi pi-history" 
+                        size="small"
+                        [severity]="filtroHistorial() === 'historial' ? 'primary' : 'secondary'"
+                        [outlined]="filtroHistorial() !== 'historial'"
+                        (onClick)="cambiarFiltroHistorial('historial')" />
+                </div>
+
                 <p-button id="boton-crear-reserva" icon="pi pi-plus" label="Nueva Reserva" (click)="crearReserva()" />
             }
-
         </div>
     </div>
 
@@ -48,13 +66,25 @@
                     <td>{{ reserva.fechaHora | date:'dd/MM/yyyy - HH:mm'}} hs</td>
                     <td>{{ reserva.paciente.nombres }} {{ reserva.paciente.apellidos }}</td>
                     <td>Dr. {{ reserva.medico.nombres }} {{ reserva.medico.apellidos }}</td>
-                    <td>{{ reserva.estado }}</td>
+                    <td>
+                        <span [ngClass]="{
+                            'text-green-600 font-bold': reserva.estado === 'ACTIVO',
+                            'text-blue-600 font-bold': reserva.estado === 'ATENDIDO',
+                            'text-orange-500 font-bold': reserva.estado === 'AUSENTE',
+                            'text-red-500 font-bold': reserva.estado === 'CANCELADO'
+                        }">
+                            {{ reserva.estado }}
+                        </span>
+                    </td>
                     <td>$ {{ reserva.valorConsulta }}</td>
                     <td>
                         <div class="flex gap-2">
-                            @if (reserva.estado === 'ACTIVO') {
-                                <p-button icon="pi pi-ban" pTooltip="Cancelar Turno" severity="danger"
+                            <!-- Permitir cancelar solo si el turno está activo y estamos viendo los próximos -->
+                            @if (reserva.estado === 'ACTIVO' && filtroHistorial() === 'proximos') {
+                                <p-button icon="pi pi-ban" pTooltip="Cancelar Turno" severity="danger" size="small"
                                     (click)="cancelarReserva(reserva.id)"></p-button>
+                            } @else {
+                                <span class="text-500 text-xs italic">Sin acciones</span>
                             }
                         </div>
                     </td>
@@ -63,7 +93,13 @@
             
             <ng-template #emptymessage>
                 <tr>
-                    <td colspan="6" class="text-center p-4">No se encontraron reservas registradas.</td>
+                    <td colspan="6" class="text-center p-4">
+                        @if (filtroHistorial() === 'proximos') {
+                            No hay turnos próximos programados.
+                        } @else {
+                            No hay registros en el historial de turnos pasados.
+                        }
+                    </td>
                 </tr>
             </ng-template>
         </p-table>
@@ -80,4 +116,5 @@
         (reservaGuardada)="refrescarReservas()">
     </app-reservas-gestion>
 
+    <p-confirmDialog />
 </app-template>

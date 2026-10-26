@@ -1,7 +1,29 @@
 <app-template>
     <div class="flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <h2 class="m-0 text-xl font-bold">Mis Turnos Médicos</h2>
-        <p-button icon="pi pi-plus" label="Reservar Nuevo Turno" (click)="nuevaReserva()"></p-button>
+
+        <!-- Contenedor derecho: Botones de filtro de historial + Botón de nueva reserva -->
+        <div class="flex align-items-center gap-2 flex-wrap">
+            <div class="flex gap-1 bg-gray-100 p-1 border-round">
+                <p-button 
+                    label="Próximos" 
+                    icon="pi pi-calendar-plus" 
+                    size="small"
+                    [severity]="filtroHistorial() === 'proximos' ? 'primary' : 'secondary'"
+                    [outlined]="filtroHistorial() !== 'proximos'"
+                    (onClick)="cambiarFiltroHistorial('proximos')" />
+
+                <p-button 
+                    label="Historial" 
+                    icon="pi pi-history" 
+                    size="small"
+                    [severity]="filtroHistorial() === 'historial' ? 'primary' : 'secondary'"
+                    [outlined]="filtroHistorial() !== 'historial'"
+                    (onClick)="cambiarFiltroHistorial('historial')" />
+            </div>
+
+            <p-button icon="pi pi-plus" label="Reservar Nuevo Turno" (click)="nuevaReserva()"></p-button>
+        </div>
     </div>
 
     <p-table [value]="reservas()" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="7" scrollHeight="70vh">
@@ -32,7 +54,8 @@
                 <td>${{ reserva.valorConsulta }}</td>
                 <td class="text-center">
                     <div class="flex justify-content-center gap-2">
-                        @if (reserva.estado === 'ACTIVO') {
+                        <!-- Permitir cancelar solo si el turno está activo y estamos en la pestaña de próximos -->
+                        @if (reserva.estado === 'ACTIVO' && filtroHistorial() === 'proximos') {
                             <p-button 
                                 icon="pi pi-ban" 
                                 pTooltip="Cancelar Turno" 
@@ -40,6 +63,8 @@
                                 [disabled]="!puedeCancelar(reserva.fechaHora)"
                                 (click)="cancelarReserva(reserva.id, reserva.fechaHora)">
                             </p-button>
+                        } @else {
+                            <span class="text-500 text-xs italic">Sin acciones</span>
                         }
                     </div>
                 </td>
@@ -48,7 +73,13 @@
         
         <ng-template #emptymessage>
             <tr>
-                <td colspan="5" class="text-center p-4">No tienes turnos reservados actualmente.</td>
+                <td colspan="5" class="text-center p-4">
+                    @if (filtroHistorial() === 'proximos') {
+                        No tienes turnos próximos reservados.
+                    } @else {
+                        No tienes registros en tu historial de turnos pasados.
+                    }
+                </td>
             </tr>
         </ng-template>
     </p-table>
@@ -60,3 +91,4 @@
     (reservaGuardada)="refrescarReservas()">
 </app-reservas-gestion>
 
+<p-confirmDialog />
