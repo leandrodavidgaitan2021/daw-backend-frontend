@@ -15,7 +15,7 @@ async function bootstrap() {
   const medicoRepo = app.get<Repository<Medico>>(getRepositoryToken(Medico));
 
   // Todos los usuarios de prueba comparten la clave 123456
-  const passwordHash = await bcrypt.hash('123456', 10);
+  const passwordHash = await bcrypt.hash('12345678', 10);
 
   // Crea el usuario si el email no existe; si existe, lo devuelve sin duplicarlo
   const crearUsuario = async (

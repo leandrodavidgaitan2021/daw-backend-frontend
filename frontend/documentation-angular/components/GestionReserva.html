@@ -1,0 +1,1482 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	    <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">frontend documentation</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="../">frontend documentation</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a href="../" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                                <li class="link">
+                                    <a 
+                                        
+                                         href="../overview.html" 
+                                         href="../overview.html" 
+                                        >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./modules.html" >
+                            <span class="fa fa-archive"></span>
+                            <span>Modules</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-modules-links"
+                            ></span>
+                        </a>
+                        <ul class="links collapse in"
+                                id="xs-modules-links"
+                            >
+                                <li class="link">
+                                    <a href="../modules/TemplatePlaygroundModule.html" >TemplatePlaygroundModule</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-cogs"></span>
+                            <span>Components</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-components-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-components-links"
+                            >
+                                <li class="link">
+                                    <a href="../components/App.html" >App</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/GestionMedico.html" >GestionMedico</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/GestionReserva.html"  class="active" >GestionReserva</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LoginComponent.html" >LoginComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/MedicosListado.html" >MedicosListado</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/MedicosTurnos.html" >MedicosTurnos</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PacientesListado.html" >PacientesListado</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ReservasListado.html" >ReservasListado</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/Template.html" >Template</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TemplatePlaygroundComponent.html" >TemplatePlaygroundComponent</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../routes.html" ><span class="fa fa-code-fork"></span>Routes</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-injectables-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="../injectables/AuthStore.html" >AuthStore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/GestionMedicoApiClient.html" >GestionMedicoApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/GestionReservasApiClient.html" >GestionReservasApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/HbsRenderService.html" >HbsRenderService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/LoginApiClient.html" >LoginApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/MedicoTurnosApiClient.html" >MedicoTurnosApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/MedicosListadoApiClient.html" >MedicosListadoApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/PacientesListadoApiClient.html" >PacientesListadoApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ReservaEstadoService.html" >ReservaEstadoService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ReservasListadoApiClient.html" >ReservasListadoApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/TemplateEditorService.html" >TemplateEditorService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ZipExportService.html" >ZipExportService</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-info"></span>
+                            <span>Interfaces</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-interfaces-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-interfaces-links"
+                            >
+                                <li class="link">
+                                    <a href="../interfaces/CompoDocConfig.html" >CompoDocConfig</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/CrearReservaDTO.html" >CrearReservaDTO</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/LoginRequest.html" >LoginRequest</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/LoginResponse.html" >LoginResponse</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/MedicoResponseDto.html" >MedicoResponseDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/MedicoResponseDto.html" >MedicoResponseDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ModificarReservaDto.html" >ModificarReservaDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ModificarValorConsultaDto.html" >ModificarValorConsultaDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ReservaResponseDto.html" >ReservaResponseDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Session.html" >Session</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Template.html" >Template</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Usuario.html" >Usuario</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/UsuarioResponseDto.html" >UsuarioResponseDto</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+                    <li class="divider"></li>
+                    <li class="copyright">
+                            Documentation generated using <a href="https://compodoc.github.io/compodoc/" target="_blank">
+                                        <img src="..//images/compodoc-vectorise.svg" class="img-responsive">
+                            </a>
+                    </li>
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="../">frontend documentation</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a href="../" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                                       <li class="link">
+                                           <a 
+                                               
+                                                href="../overview.html" 
+                                                href="../overview.html" 
+                                               >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./modules.html" >
+                                   <span class="fa fa-archive"></span>
+                                   <span>Modules</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#modules-links"
+                                   ></span>
+                               </a>
+                               <ul class="links collapse in"
+                                       id="modules-links"
+                   >
+                                       <li class="link">
+                                           <a href="../modules/TemplatePlaygroundModule.html" >TemplatePlaygroundModule</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-cogs"></span>
+                                   <span>Components</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#components-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="components-links"
+                   >
+                                       <li class="link">
+                                           <a href="../components/App.html" >App</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/GestionMedico.html" >GestionMedico</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/GestionReserva.html"  class="active" >GestionReserva</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LoginComponent.html" >LoginComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/MedicosListado.html" >MedicosListado</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/MedicosTurnos.html" >MedicosTurnos</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PacientesListado.html" >PacientesListado</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ReservasListado.html" >ReservasListado</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/Template.html" >Template</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TemplatePlaygroundComponent.html" >TemplatePlaygroundComponent</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../routes.html" ><span class="fa fa-code-fork"></span>Routes</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#injectables-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="../injectables/AuthStore.html" >AuthStore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/GestionMedicoApiClient.html" >GestionMedicoApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/GestionReservasApiClient.html" >GestionReservasApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/HbsRenderService.html" >HbsRenderService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/LoginApiClient.html" >LoginApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/MedicoTurnosApiClient.html" >MedicoTurnosApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/MedicosListadoApiClient.html" >MedicosListadoApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/PacientesListadoApiClient.html" >PacientesListadoApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ReservaEstadoService.html" >ReservaEstadoService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ReservasListadoApiClient.html" >ReservasListadoApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/TemplateEditorService.html" >TemplateEditorService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ZipExportService.html" >ZipExportService</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-info"></span>
+                                   <span>Interfaces</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#interfaces-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="interfaces-links"
+                   >
+                                       <li class="link">
+                                           <a href="../interfaces/CompoDocConfig.html" >CompoDocConfig</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/CrearReservaDTO.html" >CrearReservaDTO</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/LoginRequest.html" >LoginRequest</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/LoginResponse.html" >LoginResponse</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/MedicoResponseDto.html" >MedicoResponseDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/MedicoResponseDto.html" >MedicoResponseDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ModificarReservaDto.html" >ModificarReservaDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ModificarValorConsultaDto.html" >ModificarValorConsultaDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ReservaResponseDto.html" >ReservaResponseDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Session.html" >Session</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Template.html" >Template</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Usuario.html" >Usuario</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/UsuarioResponseDto.html" >UsuarioResponseDto</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                           <li class="copyright">
+                                   Documentation generated using <a href="https://compodoc.github.io/compodoc/" target="_blank">
+                                               <img src="..//images/compodoc-vectorise.svg" class="img-responsive">
+                                   </a>
+                           </li>
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content component">
+                   <div class="content-data">
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>GestionReserva</li>
+</ol>
+
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#infos" id="infos-tab" role="tab" data-toggle="tab">Infos</a>
+        </li>
+        <li>
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab">Source</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="infos"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/reservas/gestion/gestion-reserva.ts</code>
+</p>
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-reservas-gestion</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>gestion-reserva.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>gestion-reserva.html</code></td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+    <section>
+        <h3 id="constructor">Constructor</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>constructor()</code>
+                        </td>
+                    </tr>
+    
+                </tbody>
+            </table>
+    </section>
+
+    <section>
+        <h3 id="methods">Methods</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> esAdministrador</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>esAdministrador()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>boolean</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> cargarMedicos</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>cargarMedicos()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> cargarPacientes</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>cargarPacientes()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> cambioMedico</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>cambioMedico(id: number)</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> cambioFecha</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>cambioFecha(fecha: Date)</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> ejecutarCargaDisponibilidad</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <span class="modifier-icon method fa fa-play lock">
+                                    <span class="fa fa-lock"></span>
+                                </span>
+                            <code>ejecutarCargaDisponibilidad(idMedico: number, fecha: Date)</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> horarioOcupado</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>horarioOcupado(hora: string)</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>boolean</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> guardarReserva</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>guardarReserva()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> cerrarDialog</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>cerrarDialog()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> inicioDelDia</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <span class="modifier-icon method fa fa-play lock">
+                                    <span class="fa fa-lock"></span>
+                                </span>
+                            <code>inicioDelDia(fecha: Date)</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>Date</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
+
+    <section>
+        <h3 id="inputs">Properties</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> authStore</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>authStore:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> cargandoDisponibilidad</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>cargandoDisponibilidad:     <code>WritableSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> cargandoMedicos</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>cargandoMedicos:     <code>WritableSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> cargandoPacientes</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>cargandoPacientes:     <code>WritableSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> confirmationService</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>confirmationService:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> fechaMinima</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>fechaMinima:     <code>Date</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> fechaSeleccionada</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>fechaSeleccionada:     <code>WritableSignal&lt;Date&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> gestionReservasApiClient</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>gestionReservasApiClient:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> guardando</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>guardando:     <code>WritableSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> header</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>header:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> horarios</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>horarios:     <code>string[]</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> horariosOcupados</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>horariosOcupados:     <code>WritableSignal&lt;string[]&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> horaSeleccionada</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>horaSeleccionada:     <code>WritableSignal&lt;string&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> medicos</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>medicos:     <code>WritableSignal&lt;MedicoResponseDto[]&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> medicoSeleccionado</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>medicoSeleccionado:     <code>WritableSignal&lt;number&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> messageService</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>messageService:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> pacientes</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>pacientes:     <code>WritableSignal&lt;UsuarioResponseDto[]&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> pacienteSeleccionado</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>pacienteSeleccionado:     <code>WritableSignal&lt;number&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> reservaEstadoService</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>reservaEstadoService:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> reservaGuardada</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>reservaGuardada:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> reservaSeleccionada</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>reservaSeleccionada:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> solicitudDisponibilidad</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>solicitudDisponibilidad:     <code>number</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Default value: </i><code>0</code>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> visible</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>visible:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
+</div>
+        <div class="tab-pane fade tab-source-code" id="source">
+            <pre><code class="hljs javascript">import { Component, computed, inject, model, ModelSignal, output, Signal, signal, effect } from &quot;@angular/core&quot;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { MessageService, ConfirmationService } from &quot;primeng/api&quot;;
+import { DialogModule } from &quot;primeng/dialog&quot;;
+import { ButtonModule } from &quot;primeng/button&quot;;
+import { DatePickerModule } from &#x27;primeng/datepicker&#x27;;
+import { SelectModule } from &#x27;primeng/select&#x27;;
+import { ConfirmDialogModule } from &#x27;primeng/confirmdialog&#x27;;
+
+import { ReservaResponseDto, MedicoResponseDto, UsuarioResponseDto } from &quot;../listado/listado-reservas-dto&quot;;
+import { GestionReservasApiClient } from &quot;./gestion-reserva-api-client&quot;;
+import { CrearReservaDTO } from &quot;./crear-reserva-dto&quot;;
+import { AuthStore } from &quot;../../auth/auth-store&quot;;
+import { ReservaEstadoService } from &quot;../../shared/reserva-estado.service&quot;;
+
+@Component({
+    selector: &quot;app-reservas-gestion&quot;,
+    standalone: true,
+    templateUrl: &quot;./gestion-reserva.html&quot;,
+    styleUrls: [&quot;./gestion-reserva.css&quot;],
+    imports: [CommonModule, FormsModule, DialogModule, ButtonModule, DatePickerModule, SelectModule, ConfirmDialogModule]
+})
+export class GestionReserva {
+    visible: ModelSignal&lt;boolean&gt; &#x3D; model(false);
+    reservaSeleccionada: ModelSignal&lt;ReservaResponseDto | null&gt; &#x3D; model&lt;ReservaResponseDto | null&gt;(null);
+    
+    // Output moderno para notificar al componente padre que se guardó una reserva
+    readonly reservaGuardada &#x3D; output&lt;void&gt;();
+
+    // Definición de la propiedad header requerida por la plantilla [header]&#x3D;&quot;header()&quot;
+    header: Signal&lt;string&gt; &#x3D; computed(() &#x3D;&gt; {
+        if (this.reservaSeleccionada()) {
+            return &quot;Editar Reserva&quot;;
+        }
+        return this.esAdministrador() ? &quot;Asignar Turno (Administrador)&quot; : &quot;Reservar Turno&quot;;
+    });
+
+    private readonly messageService: MessageService &#x3D; inject(MessageService);
+    private readonly confirmationService &#x3D; inject(ConfirmationService);
+    private readonly gestionReservasApiClient &#x3D; inject(GestionReservasApiClient);
+    private readonly reservaEstadoService &#x3D; inject(ReservaEstadoService);
+    readonly authStore &#x3D; inject(AuthStore);
+
+    private solicitudDisponibilidad &#x3D; 0;
+
+    readonly medicos &#x3D; signal&lt;MedicoResponseDto[]&gt;([]);
+    readonly pacientes &#x3D; signal&lt;UsuarioResponseDto[]&gt;([]);
+    readonly medicoSeleccionado &#x3D; signal&lt;number | null&gt;(null);
+    readonly pacienteSeleccionado &#x3D; signal&lt;number | null&gt;(null);
+    readonly fechaSeleccionada &#x3D; signal&lt;Date | null&gt;(null);
+    readonly horaSeleccionada &#x3D; signal&lt;string | null&gt;(null);
+
+    readonly guardando &#x3D; signal(false);
+    readonly cargandoMedicos &#x3D; signal(false);
+    readonly cargandoPacientes &#x3D; signal(false);
+    readonly horariosOcupados &#x3D; signal&lt;string[]&gt;([]);
+    readonly cargandoDisponibilidad &#x3D; signal(false);
+
+    readonly horarios &#x3D; [
+        &#x27;08:00&#x27;, &#x27;09:00&#x27;, &#x27;10:00&#x27;, &#x27;11:00&#x27;,
+        &#x27;12:00&#x27;, &#x27;13:00&#x27;, &#x27;14:00&#x27;, &#x27;15:00&#x27;,
+    ];
+
+    readonly fechaMinima &#x3D; this.inicioDelDia(new Date());
+
+    constructor() {
+        // 1. Efecto automático: Cada vez que se abre el modal, refrescamos médicos y pacientes
+        effect(() &#x3D;&gt; {
+            if (this.visible()) {
+                this.cargarMedicos();
+                if (this.esAdministrador()) {
+                    this.cargarPacientes();
+                }
+            }
+        });
+
+        // 2. Efecto automático: Detecta cambios en el médico o la fecha para recalcular la disponibilidad en tiempo real
+        effect(() &#x3D;&gt; {
+            const idMedico &#x3D; this.medicoSeleccionado();
+            const fecha &#x3D; this.fechaSeleccionada();
+
+            this.ejecutarCargaDisponibilidad(idMedico, fecha);
+        });
+    }
+
+
+    esAdministrador(): boolean {
+        return this.authStore.usuario()?.rol &#x3D;&#x3D;&#x3D; &#x27;ADMINISTRADOR&#x27;;
+    }
+
+    cargarMedicos(): void {
+        this.cargandoMedicos.set(true);
+        this.gestionReservasApiClient.getMedicos().subscribe({
+            next: (data) &#x3D;&gt; {
+                this.medicos.set(data);
+                this.reservaEstadoService.notificarCambio();
+                this.cargandoMedicos.set(false);
+
+            },
+            error: () &#x3D;&gt; {
+                this.cargandoMedicos.set(false);
+                this.messageService.add({ severity: &#x27;error&#x27;, summary: &#x27;Error&#x27;, detail: &#x27;No se pudieron cargar los médicos&#x27; });
+            }
+        });
+    }
+
+    cargarPacientes(): void {
+        this.cargandoPacientes.set(true);
+        this.gestionReservasApiClient.getUsuarios().subscribe({
+            next: (data) &#x3D;&gt; {
+                this.pacientes.set(data);
+                this.cargandoPacientes.set(false);
+            },
+            error: () &#x3D;&gt; {
+                this.cargandoPacientes.set(false);
+                this.messageService.add({ severity: &#x27;error&#x27;, summary: &#x27;Error&#x27;, detail: &#x27;No se pudieron cargar los pacientes&#x27; });
+            }
+        });
+    }
+
+    cambioMedico(id: number | null): void {
+        this.medicoSeleccionado.set(id);
+        this.horaSeleccionada.set(null);
+    }
+
+    cambioFecha(fecha: Date | null): void {
+        this.fechaSeleccionada.set(fecha);
+        this.horaSeleccionada.set(null);
+    }
+
+    private ejecutarCargaDisponibilidad(idMedico: number | null, fecha: Date | null): void {
+        const solicitud &#x3D; ++this.solicitudDisponibilidad;
+        this.horariosOcupados.set([]);
+
+        if (idMedico &#x3D;&#x3D;&#x3D; null || !fecha) {
+            this.cargandoDisponibilidad.set(false);
+            return;
+        }
+
+        const anio &#x3D; fecha.getFullYear();
+        const mes &#x3D; String(fecha.getMonth() + 1).padStart(2, &#x27;0&#x27;);
+        const dia &#x3D; String(fecha.getDate()).padStart(2, &#x27;0&#x27;);
+        const fechaConsulta &#x3D; &#x60;${anio}-${mes}-${dia}&#x60;;
+
+        this.cargandoDisponibilidad.set(true);
+
+        this.gestionReservasApiClient.getHorariosOcupados(idMedico, fechaConsulta).subscribe({
+            next: (horarios) &#x3D;&gt; {
+                if (solicitud !&#x3D;&#x3D; this.solicitudDisponibilidad) return;
+                this.horariosOcupados.set(horarios);
+                this.cargandoDisponibilidad.set(false);
+            },
+            error: () &#x3D;&gt; {
+                if (solicitud !&#x3D;&#x3D; this.solicitudDisponibilidad) return;
+                this.cargandoDisponibilidad.set(false);
+                this.messageService.add({ severity: &#x27;error&#x27;, summary: &#x27;Error&#x27;, detail: &#x27;No se pudo consultar la disponibilidad&#x27; });
+            }
+        });
+    }
+
+    horarioOcupado(hora: string): boolean {
+        return this.horariosOcupados().includes(hora);
+    }
+
+    guardarReserva(): void {
+        const medicoId &#x3D; this.medicoSeleccionado();
+        const fecha &#x3D; this.fechaSeleccionada();
+        const hora &#x3D; this.horaSeleccionada();
+        const pacienteId &#x3D; this.pacienteSeleccionado();
+
+        if (this.esAdministrador() &amp;&amp; !pacienteId) {
+            this.messageService.add({ 
+                severity: &#x27;warn&#x27;, 
+                summary: &#x27;Falta paciente&#x27;, 
+                detail: &#x27;Debe seleccionar un paciente para asignarle el turno.&#x27; 
+            });
+            return;
+        }
+
+        if (medicoId &#x3D;&#x3D;&#x3D; null || !fecha || !hora) {
+            this.messageService.add({ 
+                severity: &#x27;warn&#x27;, 
+                summary: &#x27;Faltan datos&#x27;, 
+                detail: &#x27;Seleccioná un médico, una fecha y un horario.&#x27; 
+            });
+            return;
+        }
+
+        const [horas, minutos] &#x3D; hora.split(&#x27;:&#x27;).map(Number);
+        const fechaHora &#x3D; new Date(fecha);
+        fechaHora.setHours(horas, minutos, 0, 0);
+
+        if (fechaHora &lt;&#x3D; new Date()) {
+            this.messageService.add({ 
+                severity: &#x27;warn&#x27;, 
+                summary: &#x27;Horario no válido&#x27;, 
+                detail: &#x27;Seleccioná una fecha y hora futuras.&#x27; 
+            });
+            return;
+        }
+
+        const medicoObj &#x3D; this.medicos().find(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; medicoId);
+        const fechaFormateada &#x3D; fecha.toLocaleDateString();
+
+        // 1. Ocultamos temporalmente el modal de gestión para mostrar la confirmación nativa de PrimeNG
+        this.visible.set(false);
+
+        // 2. Usamos el servicio de confirmación nativo de PrimeNG
+        this.confirmationService.confirm({
+            header: &#x27;Confirmar reserva&#x27;,
+            message: &#x60;¿Deseas confirmar el turno con el/la Dr/a. ${medicoObj?.apellidos} para el día ${fechaFormateada} a las ${hora} hs?&#x60;,
+            icon: &#x27;pi pi-question-circle&#x27;,
+            acceptLabel: &#x27;Sí, confirmar&#x27;,
+            rejectLabel: &#x27;Cancelar&#x27;,
+            acceptButtonStyleClass: &#x27;p-button-success&#x27;,
+            rejectButtonStyleClass: &#x27;p-button-danger p-button-text&#x27;,
+            accept: () &#x3D;&gt; {
+                const datos: CrearReservaDTO &#x3D; {
+                    idMedico: medicoId,
+                    fechaHora: fechaHora.toISOString(),
+                    ...(this.esAdministrador() &amp;&amp; pacienteId ? { idPaciente: pacienteId } : {}),
+                };
+
+                this.guardando.set(true);
+
+                this.gestionReservasApiClient.crearReserva(datos).subscribe({
+                    next: () &#x3D;&gt; {
+                        this.guardando.set(false);
+                        this.messageService.add({
+                            severity: &#x27;success&#x27;,
+                            summary: &#x27;¡Turno Reservado!&#x27;,
+                            detail: &#x27;La reserva se registró correctamente en el sistema.&#x27;
+                        });
+                        this.reservaEstadoService.notificarCambio();
+
+                        this.reservaGuardada.emit(); // Notificamos al componente padre
+                        this.cerrarDialog();
+                    },
+                    error: (err: HttpErrorResponse) &#x3D;&gt; {
+                        this.guardando.set(false);
+                        this.visible.set(true); // Reabrimos el modal si hay error en el backend
+                        
+                        this.messageService.add({
+                            severity: &#x27;error&#x27;,
+                            summary: &#x27;Error al reservar&#x27;,
+                            detail: err?.error?.message || &#x27;Ocurrió un error inesperado.&#x27;
+                        });
+                    },
+                });
+            },
+            reject: () &#x3D;&gt; {
+                // Si el usuario cancela la confirmación, reabrimos el diálogo de gestión
+                this.visible.set(true);
+            }
+        });
+    }
+
+    cerrarDialog(): void {
+        this.reservaSeleccionada.set(null);
+        this.medicoSeleccionado.set(null);
+        this.pacienteSeleccionado.set(null);
+        this.fechaSeleccionada.set(null);
+        this.horaSeleccionada.set(null);
+        this.horariosOcupados.set([]);
+        this.visible.set(false);
+    }
+
+    private inicioDelDia(fecha: Date): Date {
+        const resultado &#x3D; new Date(fecha);
+        resultado.setHours(0, 0, 0, 0);
+        return resultado;
+    }
+}</code></pre>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/search/search.js"></script>
+       <script src="../js/search/lunr.min.js"></script>
+       <script src="../js/search/search-lunr.js"></script>
+
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/highlight.pack.js"></script>
+       <script src="../js/libs/highlightjs-line-numbers.min.js"></script>
+       <script src="../js/search/search_index.js"></script>
+       <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                hljs.initHighlightingOnLoad();
+                hljs.initLineNumbersOnLoad();
+            });
+       </script>
+
+    </body>
+</html>
