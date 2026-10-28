@@ -587,6 +587,30 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
+                            <b> cambiarFiltroHistorial</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>cambiarFiltroHistorial(filtro: "proximos" | "historial")</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
                             <b> refrescarReservas</b>
                         </td>
                     </tr>
@@ -693,6 +717,21 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
+                            <b><span class="modifier"></span> filtroHistorial</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>filtroHistorial:     <code>WritableSignal&lt;&quot;proximos&quot; | &quot;historial&quot;&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
                             <b><span class="modifier">Private</span> gestionReservasApiClient</b>
                         </td>
                     </tr>
@@ -738,12 +777,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b> reservas</b>
+                            <b><span class="modifier"></span> reservas</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>reservas:     <code>any</code>
+                            <span class="modifier-icon fa fa-"></span><code>reservas:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -783,6 +822,21 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
+                            <b><span class="modifier">Private</span> reservasRaw</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>reservasRaw:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
                             <b><span class="modifier"></span> vistaActual</b>
                         </td>
                     </tr>
@@ -797,13 +851,13 @@
     </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, inject, OnInit, signal, WritableSignal, effect } from &quot;@angular/core&quot;;
+            <pre><code class="hljs javascript">import { Component, inject, OnInit, signal, WritableSignal, effect, computed, Signal } from &quot;@angular/core&quot;;
 import { CommonModule } from &#x27;@angular/common&#x27;;
 import { MessageService, ConfirmationService } from &quot;primeng/api&quot;;
 import { TableModule } from &#x27;primeng/table&#x27;;
 import { ButtonModule } from &quot;primeng/button&quot;;
 import { TooltipModule } from &#x27;primeng/tooltip&#x27;;
-import { ConfirmDialogModule } from &#x27;primeng/confirmdialog&#x27;; // &lt;-- Importante
+import { ConfirmDialogModule } from &#x27;primeng/confirmdialog&#x27;;
 
 import { ReservaResponseDto } from &quot;./listado-reservas-dto&quot;;
 import { ReservasListadoApiClient } from &quot;./reservas-listado-api-cliente&quot;;
@@ -819,11 +873,11 @@ import { ReservaEstadoService } from &quot;../../shared/reserva-estado.service&q
   templateUrl: &quot;./reservas-listado.html&quot;,
   styleUrls: [&quot;./reservas-listado.css&quot;],
   imports: [CommonModule, TableModule, ButtonModule, TooltipModule, ConfirmDialogModule, Template, GestionReserva, MedicosListado],
-  providers: [ConfirmationService] // &lt;-- Proveedor local del servicio de confirmación
+  providers: [ConfirmationService]
 })
 export class ReservasListado {
   private readonly messageService &#x3D; inject(MessageService);
-  private readonly confirmationService &#x3D; inject(ConfirmationService); // &lt;-- Inyección del servicio
+  private readonly confirmationService &#x3D; inject(ConfirmationService);
   private readonly reservasListadoApiClient &#x3D; inject(ReservasListadoApiClient);
   private readonly gestionReservasApiClient &#x3D; inject(GestionReservasApiClient);
   private readonly reservaEstadoService &#x3D; inject(ReservaEstadoService);
@@ -831,33 +885,53 @@ export class ReservasListado {
   // Control de la barra de navegación de vistas (&#x27;reservas&#x27; o &#x27;medicos&#x27;)
   readonly vistaActual &#x3D; signal&lt;&#x27;reservas&#x27; | &#x27;medicos&#x27;&gt;(&#x27;reservas&#x27;);
 
-  // Signals exclusivas de Reservas
-  reservas: WritableSignal&lt;ReservaResponseDto[]&gt; &#x3D; signal([]);
+  // Control de filtro interno para la pestaña de reservas: &#x27;proximos&#x27; (desde hoy) u &#x27;historial&#x27; (pasados)
+  readonly filtroHistorial &#x3D; signal&lt;&#x27;proximos&#x27; | &#x27;historial&#x27;&gt;(&#x27;proximos&#x27;);
+
+  // Signals de Reservas (bruto)
+  private reservasRaw: WritableSignal&lt;ReservaResponseDto[]&gt; &#x3D; signal([]);
+  
+  // Propiedad computada que filtra dinámicamente según lo que elija el usuario
+  readonly reservas: Signal&lt;ReservaResponseDto[]&gt; &#x3D; computed(() &#x3D;&gt; {
+    const hoy &#x3D; new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const lista &#x3D; this.reservasRaw();
+    const filtro &#x3D; this.filtroHistorial();
+
+    if (filtro &#x3D;&#x3D;&#x3D; &#x27;proximos&#x27;) {
+      // Turnos desde hoy en adelante
+      return lista.filter(reserva &#x3D;&gt; new Date(reserva.fechaHora) &gt;&#x3D; hoy);
+    } else {
+      // Historial: Turnos estrictamente anteriores a hoy
+      return lista.filter(reserva &#x3D;&gt; new Date(reserva.fechaHora) &lt; hoy);
+    }
+  });
+
   dialogVisible: WritableSignal&lt;boolean&gt; &#x3D; signal(false);
   reservaSeleccionada: WritableSignal&lt;ReservaResponseDto | null&gt; &#x3D; signal&lt;ReservaResponseDto | null&gt;(null);
 
   constructor() {
     effect(() &#x3D;&gt; {
-        // Escucha el disparador global
         this.reservaEstadoService.actualizacionTrigger();
-        
-        // Refresca los datos automáticamente según el componente
         this.refrescarReservas();
     });
-}
+  }
 
   cambiarVista(vista: &#x27;reservas&#x27; | &#x27;medicos&#x27;): void {
     this.vistaActual.set(vista);
-    
-    // Si el usuario cambia a la pestaña de reservas, forzamos la búsqueda de inmediato
     if (vista &#x3D;&#x3D;&#x3D; &#x27;reservas&#x27;) {
       this.refrescarReservas();
     }
   }
 
+  cambiarFiltroHistorial(filtro: &#x27;proximos&#x27; | &#x27;historial&#x27;): void {
+    this.filtroHistorial.set(filtro);
+  }
+
   refrescarReservas(): void {
     this.reservasListadoApiClient.getTodas().subscribe({
-      next: (data) &#x3D;&gt; this.reservas.set(data),
+      next: (data) &#x3D;&gt; this.reservasRaw.set(data),
       error: () &#x3D;&gt; {
         this.messageService.add({ severity: &#x27;error&#x27;, summary: &#x27;Error&#x27;, detail: &#x27;Error al obtener las reservas&#x27; });
       }
@@ -870,7 +944,6 @@ export class ReservasListado {
   }
 
   cancelarReserva(id: number): void {
-    // Cuadro de confirmación nativo de PrimeNG
     this.confirmationService.confirm({
       header: &#x27;Confirmar cancelación&#x27;,
       message: &#x27;¿Estás seguro de que deseas cancelar este turno?&#x27;,
@@ -885,7 +958,6 @@ export class ReservasListado {
             this.messageService.add({ severity: &#x27;success&#x27;, summary: &#x27;Éxito&#x27;, detail: &#x27;Reserva cancelada correctamente.&#x27; });
             this.reservaEstadoService.notificarCambio();
             this.refrescarReservas();
-
           },
           error: (err) &#x3D;&gt; {
             const detail &#x3D; err?.error?.message || &#x27;No se pudo cancelar el turno.&#x27;;

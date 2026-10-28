@@ -555,6 +555,30 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
+                            <b> cambiarFiltroHistorial</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>cambiarFiltroHistorial(filtro: "proximos" | "historial")</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
                             <b> refrescarReservas</b>
                         </td>
                     </tr>
@@ -685,6 +709,21 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
+                            <b><span class="modifier"></span> filtroHistorial</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>filtroHistorial:     <code>WritableSignal&lt;&quot;proximos&quot; | &quot;historial&quot;&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
                             <b><span class="modifier">Private</span> gestionReservasApiClient</b>
                         </td>
                     </tr>
@@ -745,12 +784,27 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b> reservas</b>
+                            <b><span class="modifier"></span> reservas</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>reservas:     <code>any</code>
+                            <span class="modifier-icon fa fa-"></span><code>reservas:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> reservasRaw</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>reservasRaw:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -759,7 +813,7 @@
     </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, inject, OnInit, signal, WritableSignal, effect } from &quot;@angular/core&quot;;
+            <pre><code class="hljs javascript">import { Component, inject, signal, WritableSignal, effect, computed, Signal } from &quot;@angular/core&quot;;
 import { CommonModule } from &#x27;@angular/common&#x27;;
 import { MessageService, ConfirmationService } from &quot;primeng/api&quot;;
 import { TableModule } from &#x27;primeng/table&#x27;;
@@ -771,7 +825,7 @@ import { ReservaResponseDto } from &quot;../../listado/listado-reservas-dto&quot
 import { GestionReservasApiClient } from &quot;../../gestion/gestion-reserva-api-client&quot;;
 import { Template } from &quot;../../../template/template&quot;;
 import { GestionReserva } from &quot;../../gestion/gestion-reserva&quot;;
-import { PacientesListadoApiClient } from &quot;./pacientes-listado-api-client&quot;;
+import { PacientesListadoApiClient } from &quot;../gestion/pacientes-listado-api-client&quot;;
 import { ReservaEstadoService } from &quot;../../../shared/reserva-estado.service&quot;;
 
 @Component({
@@ -788,9 +842,28 @@ export class PacientesListado {
   private readonly pacientesListadoApiClient &#x3D; inject(PacientesListadoApiClient);
   private readonly reservaEstadoService &#x3D; inject(ReservaEstadoService);
 
-  // Signals del listado de turnos del paciente
-  reservas: WritableSignal&lt;ReservaResponseDto[]&gt; &#x3D; signal([]);
+  // Control de filtro interno: &#x27;proximos&#x27; (desde hoy) u &#x27;historial&#x27; (pasados)
+  readonly filtroHistorial &#x3D; signal&lt;&#x27;proximos&#x27; | &#x27;historial&#x27;&gt;(&#x27;proximos&#x27;);
+
+  // Signals del listado (bruto y computado filtrado)
+  private reservasRaw: WritableSignal&lt;ReservaResponseDto[]&gt; &#x3D; signal([]);
+  
+  readonly reservas: Signal&lt;ReservaResponseDto[]&gt; &#x3D; computed(() &#x3D;&gt; {
+    const hoy &#x3D; new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const lista &#x3D; this.reservasRaw();
+    const filtro &#x3D; this.filtroHistorial();
+
+    if (filtro &#x3D;&#x3D;&#x3D; &#x27;proximos&#x27;) {
+      return lista.filter(reserva &#x3D;&gt; new Date(reserva.fechaHora) &gt;&#x3D; hoy);
+    } else {
+      return lista.filter(reserva &#x3D;&gt; new Date(reserva.fechaHora) &lt; hoy);
+    }
+  });
+
   dialogVisible: WritableSignal&lt;boolean&gt; &#x3D; signal(false);
+
   constructor() {
       effect(() &#x3D;&gt; {
           // Escucha el disparador global
@@ -801,10 +874,13 @@ export class PacientesListado {
       });
   }
 
+  cambiarFiltroHistorial(filtro: &#x27;proximos&#x27; | &#x27;historial&#x27;): void {
+    this.filtroHistorial.set(filtro);
+  }
 
   refrescarReservas(): void {
     this.pacientesListadoApiClient.getMisTurnos().subscribe({
-      next: (data) &#x3D;&gt; this.reservas.set(data),
+      next: (data) &#x3D;&gt; this.reservasRaw.set(data),
       error: () &#x3D;&gt; {
         this.messageService.add({ severity: &#x27;error&#x27;, summary: &#x27;Error&#x27;, detail: &#x27;Error al obtener sus turnos reservados.&#x27; });
       }
@@ -826,10 +902,8 @@ export class PacientesListado {
       const diferenciaMs &#x3D; fechaTurno.getTime() - hoy.getTime();
       const diasDiferencia &#x3D; diferenciaMs / (1000 * 60 * 60 * 24);
 
-      // Si diasDiferencia es 0, significa que el turno es HOY. 
-      // Si es menor a 0, el turno ya pasó.
       // Solo permite cancelar si hay 1 o más días de diferencia (hasta el día anterior).
-      return diasDiferencia &gt;&#x3D; 0;
+      return diasDiferencia &gt;&#x3D; 1;
   }
 
   cancelarReserva(id: number, fechaHoraStr: string): void {

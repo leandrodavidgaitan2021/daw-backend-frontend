@@ -1154,281 +1154,337 @@
     </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, computed, inject, model, ModelSignal, output, Signal, signal, effect } from &quot;@angular/core&quot;;
-import { CommonModule } from &#x27;@angular/common&#x27;;
-import { FormsModule } from &#x27;@angular/forms&#x27;;
-import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+            <pre><code class="hljs javascript">import {
+  Component,
+  computed,
+  inject,
+  model,
+  ModelSignal,
+  output,
+  Signal,
+  signal,
+  effect,
+} from &quot;@angular/core&quot;;
+import { CommonModule } from &quot;@angular/common&quot;;
+import { FormsModule } from &quot;@angular/forms&quot;;
+import { HttpErrorResponse } from &quot;@angular/common/http&quot;;
 import { MessageService, ConfirmationService } from &quot;primeng/api&quot;;
 import { DialogModule } from &quot;primeng/dialog&quot;;
 import { ButtonModule } from &quot;primeng/button&quot;;
-import { DatePickerModule } from &#x27;primeng/datepicker&#x27;;
-import { SelectModule } from &#x27;primeng/select&#x27;;
-import { ConfirmDialogModule } from &#x27;primeng/confirmdialog&#x27;;
+import { DatePickerModule } from &quot;primeng/datepicker&quot;;
+import { SelectModule } from &quot;primeng/select&quot;;
+import { ConfirmDialogModule } from &quot;primeng/confirmdialog&quot;;
 
-import { ReservaResponseDto, MedicoResponseDto, UsuarioResponseDto } from &quot;../listado/listado-reservas-dto&quot;;
+import {
+  ReservaResponseDto,
+  MedicoResponseDto,
+  UsuarioResponseDto,
+} from &quot;../listado/listado-reservas-dto&quot;;
 import { GestionReservasApiClient } from &quot;./gestion-reserva-api-client&quot;;
 import { CrearReservaDTO } from &quot;./crear-reserva-dto&quot;;
 import { AuthStore } from &quot;../../auth/auth-store&quot;;
 import { ReservaEstadoService } from &quot;../../shared/reserva-estado.service&quot;;
 
 @Component({
-    selector: &quot;app-reservas-gestion&quot;,
-    standalone: true,
-    templateUrl: &quot;./gestion-reserva.html&quot;,
-    styleUrls: [&quot;./gestion-reserva.css&quot;],
-    imports: [CommonModule, FormsModule, DialogModule, ButtonModule, DatePickerModule, SelectModule, ConfirmDialogModule]
+  selector: &quot;app-reservas-gestion&quot;,
+  standalone: true,
+  templateUrl: &quot;./gestion-reserva.html&quot;,
+  styleUrls: [&quot;./gestion-reserva.css&quot;],
+  imports: [
+    CommonModule,
+    FormsModule,
+    DialogModule,
+    ButtonModule,
+    DatePickerModule,
+    SelectModule,
+    ConfirmDialogModule,
+  ],
 })
 export class GestionReserva {
-    visible: ModelSignal&lt;boolean&gt; &#x3D; model(false);
-    reservaSeleccionada: ModelSignal&lt;ReservaResponseDto | null&gt; &#x3D; model&lt;ReservaResponseDto | null&gt;(null);
-    
-    // Output moderno para notificar al componente padre que se guardó una reserva
-    readonly reservaGuardada &#x3D; output&lt;void&gt;();
+  visible: ModelSignal&lt;boolean&gt; &#x3D; model(false);
+  reservaSeleccionada: ModelSignal&lt;ReservaResponseDto | null&gt; &#x3D;
+    model&lt;ReservaResponseDto | null&gt;(null);
 
-    // Definición de la propiedad header requerida por la plantilla [header]&#x3D;&quot;header()&quot;
-    header: Signal&lt;string&gt; &#x3D; computed(() &#x3D;&gt; {
-        if (this.reservaSeleccionada()) {
-            return &quot;Editar Reserva&quot;;
+  // Output moderno para notificar al componente padre que se guardó una reserva
+  readonly reservaGuardada &#x3D; output&lt;void&gt;();
+
+  // Definición de la propiedad header requerida por la plantilla [header]&#x3D;&quot;header()&quot;
+  header: Signal&lt;string&gt; &#x3D; computed(() &#x3D;&gt; {
+    if (this.reservaSeleccionada()) {
+      return &quot;Editar Reserva&quot;;
+    }
+    return this.esAdministrador()
+      ? &quot;Asignar Turno (Administrador)&quot;
+      : &quot;Reservar Turno&quot;;
+  });
+
+  private readonly messageService: MessageService &#x3D; inject(MessageService);
+  private readonly confirmationService &#x3D; inject(ConfirmationService);
+  private readonly gestionReservasApiClient &#x3D; inject(GestionReservasApiClient);
+  private readonly reservaEstadoService &#x3D; inject(ReservaEstadoService);
+  readonly authStore &#x3D; inject(AuthStore);
+
+  private solicitudDisponibilidad &#x3D; 0;
+
+  readonly medicos &#x3D; signal&lt;MedicoResponseDto[]&gt;([]);
+  readonly pacientes &#x3D; signal&lt;UsuarioResponseDto[]&gt;([]);
+  readonly medicoSeleccionado &#x3D; signal&lt;number | null&gt;(null);
+  readonly pacienteSeleccionado &#x3D; signal&lt;number | null&gt;(null);
+  readonly fechaSeleccionada &#x3D; signal&lt;Date | null&gt;(null);
+  readonly horaSeleccionada &#x3D; signal&lt;string | null&gt;(null);
+
+  readonly guardando &#x3D; signal(false);
+  readonly cargandoMedicos &#x3D; signal(false);
+  readonly cargandoPacientes &#x3D; signal(false);
+  readonly horariosOcupados &#x3D; signal&lt;string[]&gt;([]);
+  readonly cargandoDisponibilidad &#x3D; signal(false);
+
+  readonly horarios &#x3D; [
+    &quot;08:00&quot;,
+    &quot;09:00&quot;,
+    &quot;10:00&quot;,
+    &quot;11:00&quot;,
+    &quot;12:00&quot;,
+    &quot;13:00&quot;,
+    &quot;14:00&quot;,
+    &quot;15:00&quot;,
+  ];
+
+  readonly fechaMinima &#x3D; this.inicioDelDia(new Date());
+
+  constructor() {
+    // 1. Efecto automático: Cada vez que se abre el modal, refrescamos médicos y pacientes
+    effect(() &#x3D;&gt; {
+      if (this.visible()) {
+        this.cargarMedicos();
+        if (this.esAdministrador()) {
+          this.cargarPacientes();
         }
-        return this.esAdministrador() ? &quot;Asignar Turno (Administrador)&quot; : &quot;Reservar Turno&quot;;
+      }
     });
 
-    private readonly messageService: MessageService &#x3D; inject(MessageService);
-    private readonly confirmationService &#x3D; inject(ConfirmationService);
-    private readonly gestionReservasApiClient &#x3D; inject(GestionReservasApiClient);
-    private readonly reservaEstadoService &#x3D; inject(ReservaEstadoService);
-    readonly authStore &#x3D; inject(AuthStore);
+    // 2. Efecto automático: Detecta cambios en el médico o la fecha para recalcular la disponibilidad en tiempo real
+    effect(() &#x3D;&gt; {
+      const idMedico &#x3D; this.medicoSeleccionado();
+      const fecha &#x3D; this.fechaSeleccionada();
 
-    private solicitudDisponibilidad &#x3D; 0;
+      this.ejecutarCargaDisponibilidad(idMedico, fecha);
+    });
+  }
 
-    readonly medicos &#x3D; signal&lt;MedicoResponseDto[]&gt;([]);
-    readonly pacientes &#x3D; signal&lt;UsuarioResponseDto[]&gt;([]);
-    readonly medicoSeleccionado &#x3D; signal&lt;number | null&gt;(null);
-    readonly pacienteSeleccionado &#x3D; signal&lt;number | null&gt;(null);
-    readonly fechaSeleccionada &#x3D; signal&lt;Date | null&gt;(null);
-    readonly horaSeleccionada &#x3D; signal&lt;string | null&gt;(null);
+  esAdministrador(): boolean {
+    return this.authStore.usuario()?.rol &#x3D;&#x3D;&#x3D; &quot;ADMINISTRADOR&quot;;
+  }
 
-    readonly guardando &#x3D; signal(false);
-    readonly cargandoMedicos &#x3D; signal(false);
-    readonly cargandoPacientes &#x3D; signal(false);
-    readonly horariosOcupados &#x3D; signal&lt;string[]&gt;([]);
-    readonly cargandoDisponibilidad &#x3D; signal(false);
-
-    readonly horarios &#x3D; [
-        &#x27;08:00&#x27;, &#x27;09:00&#x27;, &#x27;10:00&#x27;, &#x27;11:00&#x27;,
-        &#x27;12:00&#x27;, &#x27;13:00&#x27;, &#x27;14:00&#x27;, &#x27;15:00&#x27;,
-    ];
-
-    readonly fechaMinima &#x3D; this.inicioDelDia(new Date());
-
-    constructor() {
-        // 1. Efecto automático: Cada vez que se abre el modal, refrescamos médicos y pacientes
-        effect(() &#x3D;&gt; {
-            if (this.visible()) {
-                this.cargarMedicos();
-                if (this.esAdministrador()) {
-                    this.cargarPacientes();
-                }
-            }
+  cargarMedicos(): void {
+    this.cargandoMedicos.set(true);
+    this.gestionReservasApiClient.getMedicos().subscribe({
+      next: (data) &#x3D;&gt; {
+        this.medicos.set(data);
+        this.reservaEstadoService.notificarCambio();
+        this.cargandoMedicos.set(false);
+      },
+      error: () &#x3D;&gt; {
+        this.cargandoMedicos.set(false);
+        this.messageService.add({
+          severity: &quot;error&quot;,
+          summary: &quot;Error&quot;,
+          detail: &quot;No se pudieron cargar los médicos&quot;,
         });
+      },
+    });
+  }
 
-        // 2. Efecto automático: Detecta cambios en el médico o la fecha para recalcular la disponibilidad en tiempo real
-        effect(() &#x3D;&gt; {
-            const idMedico &#x3D; this.medicoSeleccionado();
-            const fecha &#x3D; this.fechaSeleccionada();
-
-            this.ejecutarCargaDisponibilidad(idMedico, fecha);
+  cargarPacientes(): void {
+    this.cargandoPacientes.set(true);
+    this.gestionReservasApiClient.getUsuarios().subscribe({
+      next: (data) &#x3D;&gt; {
+        this.pacientes.set(data);
+        this.cargandoPacientes.set(false);
+      },
+      error: () &#x3D;&gt; {
+        this.cargandoPacientes.set(false);
+        this.messageService.add({
+          severity: &quot;error&quot;,
+          summary: &quot;Error&quot;,
+          detail: &quot;No se pudieron cargar los pacientes&quot;,
         });
+      },
+    });
+  }
+
+  cambioMedico(id: number | null): void {
+    this.medicoSeleccionado.set(id);
+    this.horaSeleccionada.set(null);
+  }
+
+  cambioFecha(fecha: Date | null): void {
+    this.fechaSeleccionada.set(fecha);
+    this.horaSeleccionada.set(null);
+  }
+
+  private ejecutarCargaDisponibilidad(
+    idMedico: number | null,
+    fecha: Date | null,
+  ): void {
+    const solicitud &#x3D; ++this.solicitudDisponibilidad;
+    this.horariosOcupados.set([]);
+
+    if (idMedico &#x3D;&#x3D;&#x3D; null || !fecha) {
+      this.cargandoDisponibilidad.set(false);
+      return;
+    }
+
+    const anio &#x3D; fecha.getFullYear();
+    const mes &#x3D; String(fecha.getMonth() + 1).padStart(2, &quot;0&quot;);
+    const dia &#x3D; String(fecha.getDate()).padStart(2, &quot;0&quot;);
+    const fechaConsulta &#x3D; &#x60;${anio}-${mes}-${dia}&#x60;;
+
+    this.cargandoDisponibilidad.set(true);
+
+    this.gestionReservasApiClient
+      .getHorariosOcupados(idMedico, fechaConsulta)
+      .subscribe({
+        next: (horarios) &#x3D;&gt; {
+          if (solicitud !&#x3D;&#x3D; this.solicitudDisponibilidad) return;
+          this.horariosOcupados.set(horarios);
+          this.cargandoDisponibilidad.set(false);
+        },
+        error: () &#x3D;&gt; {
+          if (solicitud !&#x3D;&#x3D; this.solicitudDisponibilidad) return;
+          this.cargandoDisponibilidad.set(false);
+          this.messageService.add({
+            severity: &quot;error&quot;,
+            summary: &quot;Error&quot;,
+            detail: &quot;No se pudo consultar la disponibilidad&quot;,
+          });
+        },
+      });
+  }
+
+  horarioOcupado(hora: string): boolean {
+    return this.horariosOcupados().includes(hora);
+  }
+
+  guardarReserva(): void {
+    const medicoId &#x3D; this.medicoSeleccionado();
+    const fecha &#x3D; this.fechaSeleccionada();
+    const hora &#x3D; this.horaSeleccionada();
+    const pacienteId &#x3D; this.pacienteSeleccionado();
+
+    if (this.esAdministrador() &amp;&amp; !pacienteId) {
+      this.messageService.add({
+        severity: &quot;warn&quot;,
+        summary: &quot;Falta paciente&quot;,
+        detail: &quot;Debe seleccionar un paciente para asignarle el turno.&quot;,
+      });
+      return;
+    }
+
+    if (medicoId &#x3D;&#x3D;&#x3D; null || !fecha || !hora) {
+      this.messageService.add({
+        severity: &quot;warn&quot;,
+        summary: &quot;Faltan datos&quot;,
+        detail: &quot;Seleccioná un médico, una fecha y un horario.&quot;,
+      });
+      return;
+    }
+
+    const [horas, minutos] &#x3D; hora.split(&quot;:&quot;).map(Number);
+    const fechaHora &#x3D; new Date(fecha);
+    fechaHora.setHours(horas, minutos, 0, 0);
+
+    if (fechaHora &lt;&#x3D; new Date()) {
+      this.messageService.add({
+        severity: &quot;warn&quot;,
+        summary: &quot;Horario no válido&quot;,
+        detail: &quot;Seleccioná una fecha y hora futuras.&quot;,
+      });
+      return;
+    }
+
+    // ─── NUEVA VALIDACIÓN: Máximo 30 días de anticipación ───
+    const maximaFecha &#x3D; new Date();
+    maximaFecha.setDate(maximaFecha.getDate() + 30);
+
+    if (fechaHora &gt; maximaFecha) {
+      this.messageService.add({
+        severity: &quot;warn&quot;,
+        summary: &quot;Anticipación excedida&quot;,
+        detail: &quot;No se puede realizar una reserva con más de 30 días de anticipación.&quot;,
+      });
+      return;
     }
 
 
-    esAdministrador(): boolean {
-        return this.authStore.usuario()?.rol &#x3D;&#x3D;&#x3D; &#x27;ADMINISTRADOR&#x27;;
-    }
+    const medicoObj &#x3D; this.medicos().find((m) &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; medicoId);
+    const fechaFormateada &#x3D; fecha.toLocaleDateString();
 
-    cargarMedicos(): void {
-        this.cargandoMedicos.set(true);
-        this.gestionReservasApiClient.getMedicos().subscribe({
-            next: (data) &#x3D;&gt; {
-                this.medicos.set(data);
-                this.reservaEstadoService.notificarCambio();
-                this.cargandoMedicos.set(false);
+    this.confirmationService.confirm({
+      key: &quot;reservaDialog&quot;, // 👈 Asociamos la clave aquí
+      header: &quot;Confirmar reserva&quot;,
+      message: &#x60;¿Deseas confirmar el turno con el/la Dr/a. ${medicoObj?.apellidos} para el día ${fechaFormateada} a las ${hora} hs?&#x60;,
+      icon: &quot;pi pi-question-circle&quot;,
+      acceptLabel: &quot;Sí, confirmar&quot;,
+      rejectLabel: &quot;Cancelar&quot;,
+      acceptButtonStyleClass: &quot;p-button-success&quot;,
+      rejectButtonStyleClass: &quot;p-button-secondary p-button-text&quot;,
+      accept: () &#x3D;&gt; {
+        const datos: CrearReservaDTO &#x3D; {
+          idMedico: medicoId,
+          fechaHora: fechaHora.toISOString(),
+          ...(this.esAdministrador() &amp;&amp; pacienteId
+            ? { idPaciente: pacienteId }
+            : {}),
+        };
 
-            },
-            error: () &#x3D;&gt; {
-                this.cargandoMedicos.set(false);
-                this.messageService.add({ severity: &#x27;error&#x27;, summary: &#x27;Error&#x27;, detail: &#x27;No se pudieron cargar los médicos&#x27; });
-            }
-        });
-    }
+        this.guardando.set(true);
 
-    cargarPacientes(): void {
-        this.cargandoPacientes.set(true);
-        this.gestionReservasApiClient.getUsuarios().subscribe({
-            next: (data) &#x3D;&gt; {
-                this.pacientes.set(data);
-                this.cargandoPacientes.set(false);
-            },
-            error: () &#x3D;&gt; {
-                this.cargandoPacientes.set(false);
-                this.messageService.add({ severity: &#x27;error&#x27;, summary: &#x27;Error&#x27;, detail: &#x27;No se pudieron cargar los pacientes&#x27; });
-            }
-        });
-    }
-
-    cambioMedico(id: number | null): void {
-        this.medicoSeleccionado.set(id);
-        this.horaSeleccionada.set(null);
-    }
-
-    cambioFecha(fecha: Date | null): void {
-        this.fechaSeleccionada.set(fecha);
-        this.horaSeleccionada.set(null);
-    }
-
-    private ejecutarCargaDisponibilidad(idMedico: number | null, fecha: Date | null): void {
-        const solicitud &#x3D; ++this.solicitudDisponibilidad;
-        this.horariosOcupados.set([]);
-
-        if (idMedico &#x3D;&#x3D;&#x3D; null || !fecha) {
-            this.cargandoDisponibilidad.set(false);
-            return;
-        }
-
-        const anio &#x3D; fecha.getFullYear();
-        const mes &#x3D; String(fecha.getMonth() + 1).padStart(2, &#x27;0&#x27;);
-        const dia &#x3D; String(fecha.getDate()).padStart(2, &#x27;0&#x27;);
-        const fechaConsulta &#x3D; &#x60;${anio}-${mes}-${dia}&#x60;;
-
-        this.cargandoDisponibilidad.set(true);
-
-        this.gestionReservasApiClient.getHorariosOcupados(idMedico, fechaConsulta).subscribe({
-            next: (horarios) &#x3D;&gt; {
-                if (solicitud !&#x3D;&#x3D; this.solicitudDisponibilidad) return;
-                this.horariosOcupados.set(horarios);
-                this.cargandoDisponibilidad.set(false);
-            },
-            error: () &#x3D;&gt; {
-                if (solicitud !&#x3D;&#x3D; this.solicitudDisponibilidad) return;
-                this.cargandoDisponibilidad.set(false);
-                this.messageService.add({ severity: &#x27;error&#x27;, summary: &#x27;Error&#x27;, detail: &#x27;No se pudo consultar la disponibilidad&#x27; });
-            }
-        });
-    }
-
-    horarioOcupado(hora: string): boolean {
-        return this.horariosOcupados().includes(hora);
-    }
-
-    guardarReserva(): void {
-        const medicoId &#x3D; this.medicoSeleccionado();
-        const fecha &#x3D; this.fechaSeleccionada();
-        const hora &#x3D; this.horaSeleccionada();
-        const pacienteId &#x3D; this.pacienteSeleccionado();
-
-        if (this.esAdministrador() &amp;&amp; !pacienteId) {
-            this.messageService.add({ 
-                severity: &#x27;warn&#x27;, 
-                summary: &#x27;Falta paciente&#x27;, 
-                detail: &#x27;Debe seleccionar un paciente para asignarle el turno.&#x27; 
+        this.gestionReservasApiClient.crearReserva(datos).subscribe({
+          next: () &#x3D;&gt; {
+            this.guardando.set(false);
+            this.messageService.add({
+              severity: &quot;success&quot;,
+              summary: &quot;¡Turno Reservado!&quot;,
+              detail: &quot;La reserva se registró correctamente en el sistema.&quot;,
             });
-            return;
-        }
-
-        if (medicoId &#x3D;&#x3D;&#x3D; null || !fecha || !hora) {
-            this.messageService.add({ 
-                severity: &#x27;warn&#x27;, 
-                summary: &#x27;Faltan datos&#x27;, 
-                detail: &#x27;Seleccioná un médico, una fecha y un horario.&#x27; 
+            this.reservaEstadoService.notificarCambio();
+            this.reservaGuardada.emit();
+            this.cerrarDialog();
+          },
+          error: (err: HttpErrorResponse) &#x3D;&gt; {
+            this.guardando.set(false);
+            this.messageService.add({
+              severity: &quot;error&quot;,
+              summary: &quot;Error al reservar&quot;,
+              detail: err?.error?.message || &quot;Ocurrió un error inesperado.&quot;,
             });
-            return;
-        }
-
-        const [horas, minutos] &#x3D; hora.split(&#x27;:&#x27;).map(Number);
-        const fechaHora &#x3D; new Date(fecha);
-        fechaHora.setHours(horas, minutos, 0, 0);
-
-        if (fechaHora &lt;&#x3D; new Date()) {
-            this.messageService.add({ 
-                severity: &#x27;warn&#x27;, 
-                summary: &#x27;Horario no válido&#x27;, 
-                detail: &#x27;Seleccioná una fecha y hora futuras.&#x27; 
-            });
-            return;
-        }
-
-        const medicoObj &#x3D; this.medicos().find(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; medicoId);
-        const fechaFormateada &#x3D; fecha.toLocaleDateString();
-
-        // 1. Ocultamos temporalmente el modal de gestión para mostrar la confirmación nativa de PrimeNG
-        this.visible.set(false);
-
-        // 2. Usamos el servicio de confirmación nativo de PrimeNG
-        this.confirmationService.confirm({
-            header: &#x27;Confirmar reserva&#x27;,
-            message: &#x60;¿Deseas confirmar el turno con el/la Dr/a. ${medicoObj?.apellidos} para el día ${fechaFormateada} a las ${hora} hs?&#x60;,
-            icon: &#x27;pi pi-question-circle&#x27;,
-            acceptLabel: &#x27;Sí, confirmar&#x27;,
-            rejectLabel: &#x27;Cancelar&#x27;,
-            acceptButtonStyleClass: &#x27;p-button-success&#x27;,
-            rejectButtonStyleClass: &#x27;p-button-danger p-button-text&#x27;,
-            accept: () &#x3D;&gt; {
-                const datos: CrearReservaDTO &#x3D; {
-                    idMedico: medicoId,
-                    fechaHora: fechaHora.toISOString(),
-                    ...(this.esAdministrador() &amp;&amp; pacienteId ? { idPaciente: pacienteId } : {}),
-                };
-
-                this.guardando.set(true);
-
-                this.gestionReservasApiClient.crearReserva(datos).subscribe({
-                    next: () &#x3D;&gt; {
-                        this.guardando.set(false);
-                        this.messageService.add({
-                            severity: &#x27;success&#x27;,
-                            summary: &#x27;¡Turno Reservado!&#x27;,
-                            detail: &#x27;La reserva se registró correctamente en el sistema.&#x27;
-                        });
-                        this.reservaEstadoService.notificarCambio();
-
-                        this.reservaGuardada.emit(); // Notificamos al componente padre
-                        this.cerrarDialog();
-                    },
-                    error: (err: HttpErrorResponse) &#x3D;&gt; {
-                        this.guardando.set(false);
-                        this.visible.set(true); // Reabrimos el modal si hay error en el backend
-                        
-                        this.messageService.add({
-                            severity: &#x27;error&#x27;,
-                            summary: &#x27;Error al reservar&#x27;,
-                            detail: err?.error?.message || &#x27;Ocurrió un error inesperado.&#x27;
-                        });
-                    },
-                });
-            },
-            reject: () &#x3D;&gt; {
-                // Si el usuario cancela la confirmación, reabrimos el diálogo de gestión
-                this.visible.set(true);
-            }
+          },
         });
-    }
+      },
+      reject: () &#x3D;&gt; {
+        // Cancelado
+      },
+    });
+  }
 
-    cerrarDialog(): void {
-        this.reservaSeleccionada.set(null);
-        this.medicoSeleccionado.set(null);
-        this.pacienteSeleccionado.set(null);
-        this.fechaSeleccionada.set(null);
-        this.horaSeleccionada.set(null);
-        this.horariosOcupados.set([]);
-        this.visible.set(false);
-    }
+  cerrarDialog(): void {
+    this.reservaSeleccionada.set(null);
+    this.medicoSeleccionado.set(null);
+    this.pacienteSeleccionado.set(null);
+    this.fechaSeleccionada.set(null);
+    this.horaSeleccionada.set(null);
+    this.horariosOcupados.set([]);
+    this.visible.set(false);
+  }
 
-    private inicioDelDia(fecha: Date): Date {
-        const resultado &#x3D; new Date(fecha);
-        resultado.setHours(0, 0, 0, 0);
-        return resultado;
-    }
-}</code></pre>
+  private inicioDelDia(fecha: Date): Date {
+    const resultado &#x3D; new Date(fecha);
+    resultado.setHours(0, 0, 0, 0);
+    return resultado;
+  }
+}
+</code></pre>
         </div>
     </div>
 
