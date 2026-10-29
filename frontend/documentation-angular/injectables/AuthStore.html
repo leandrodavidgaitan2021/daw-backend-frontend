@@ -1,0 +1,812 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	    <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">frontend documentation</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="../">frontend documentation</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a href="../" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                                <li class="link">
+                                    <a 
+                                        
+                                         href="../overview.html" 
+                                         href="../overview.html" 
+                                        >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./modules.html" >
+                            <span class="fa fa-archive"></span>
+                            <span>Modules</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-modules-links"
+                            ></span>
+                        </a>
+                        <ul class="links collapse in"
+                                id="xs-modules-links"
+                            >
+                                <li class="link">
+                                    <a href="../modules/TemplatePlaygroundModule.html" >TemplatePlaygroundModule</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-cogs"></span>
+                            <span>Components</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-components-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-components-links"
+                            >
+                                <li class="link">
+                                    <a href="../components/App.html" >App</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/GestionMedico.html" >GestionMedico</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/GestionReserva.html" >GestionReserva</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LoginComponent.html" >LoginComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/MedicosListado.html" >MedicosListado</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/MedicosTurnos.html" >MedicosTurnos</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PacientesListado.html" >PacientesListado</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ReservasListado.html" >ReservasListado</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/Template.html" >Template</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TemplatePlaygroundComponent.html" >TemplatePlaygroundComponent</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../routes.html" ><span class="fa fa-code-fork"></span>Routes</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-injectables-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="../injectables/AuthStore.html"  class="active" >AuthStore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/GestionMedicoApiClient.html" >GestionMedicoApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/GestionReservasApiClient.html" >GestionReservasApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/HbsRenderService.html" >HbsRenderService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/LoginApiClient.html" >LoginApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/MedicoTurnosApiClient.html" >MedicoTurnosApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/MedicosListadoApiClient.html" >MedicosListadoApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/PacientesListadoApiClient.html" >PacientesListadoApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ReservaEstadoService.html" >ReservaEstadoService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ReservasListadoApiClient.html" >ReservasListadoApiClient</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/TemplateEditorService.html" >TemplateEditorService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ZipExportService.html" >ZipExportService</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-info"></span>
+                            <span>Interfaces</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-interfaces-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-interfaces-links"
+                            >
+                                <li class="link">
+                                    <a href="../interfaces/CompoDocConfig.html" >CompoDocConfig</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/CrearReservaDTO.html" >CrearReservaDTO</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/LoginRequest.html" >LoginRequest</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/LoginResponse.html" >LoginResponse</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/MedicoResponseDto.html" >MedicoResponseDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/MedicoResponseDto.html" >MedicoResponseDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ModificarReservaDto.html" >ModificarReservaDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ModificarValorConsultaDto.html" >ModificarValorConsultaDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ReservaResponseDto.html" >ReservaResponseDto</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Session.html" >Session</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Template.html" >Template</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Usuario.html" >Usuario</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/UsuarioResponseDto.html" >UsuarioResponseDto</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+                    <li class="divider"></li>
+                    <li class="copyright">
+                            Documentation generated using <a href="https://compodoc.github.io/compodoc/" target="_blank">
+                                        <img src="..//images/compodoc-vectorise.svg" class="img-responsive">
+                            </a>
+                    </li>
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="../">frontend documentation</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a href="../" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                                       <li class="link">
+                                           <a 
+                                               
+                                                href="../overview.html" 
+                                                href="../overview.html" 
+                                               >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./modules.html" >
+                                   <span class="fa fa-archive"></span>
+                                   <span>Modules</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#modules-links"
+                                   ></span>
+                               </a>
+                               <ul class="links collapse in"
+                                       id="modules-links"
+                   >
+                                       <li class="link">
+                                           <a href="../modules/TemplatePlaygroundModule.html" >TemplatePlaygroundModule</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-cogs"></span>
+                                   <span>Components</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#components-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="components-links"
+                   >
+                                       <li class="link">
+                                           <a href="../components/App.html" >App</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/GestionMedico.html" >GestionMedico</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/GestionReserva.html" >GestionReserva</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LoginComponent.html" >LoginComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/MedicosListado.html" >MedicosListado</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/MedicosTurnos.html" >MedicosTurnos</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PacientesListado.html" >PacientesListado</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ReservasListado.html" >ReservasListado</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/Template.html" >Template</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TemplatePlaygroundComponent.html" >TemplatePlaygroundComponent</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../routes.html" ><span class="fa fa-code-fork"></span>Routes</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#injectables-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="../injectables/AuthStore.html"  class="active" >AuthStore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/GestionMedicoApiClient.html" >GestionMedicoApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/GestionReservasApiClient.html" >GestionReservasApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/HbsRenderService.html" >HbsRenderService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/LoginApiClient.html" >LoginApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/MedicoTurnosApiClient.html" >MedicoTurnosApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/MedicosListadoApiClient.html" >MedicosListadoApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/PacientesListadoApiClient.html" >PacientesListadoApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ReservaEstadoService.html" >ReservaEstadoService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ReservasListadoApiClient.html" >ReservasListadoApiClient</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/TemplateEditorService.html" >TemplateEditorService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ZipExportService.html" >ZipExportService</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-info"></span>
+                                   <span>Interfaces</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#interfaces-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="interfaces-links"
+                   >
+                                       <li class="link">
+                                           <a href="../interfaces/CompoDocConfig.html" >CompoDocConfig</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/CrearReservaDTO.html" >CrearReservaDTO</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/LoginRequest.html" >LoginRequest</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/LoginResponse.html" >LoginResponse</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/MedicoResponseDto.html" >MedicoResponseDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/MedicoResponseDto.html" >MedicoResponseDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ModificarReservaDto.html" >ModificarReservaDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ModificarValorConsultaDto.html" >ModificarValorConsultaDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ReservaResponseDto.html" >ReservaResponseDto</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Session.html" >Session</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Template.html" >Template</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Usuario.html" >Usuario</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/UsuarioResponseDto.html" >UsuarioResponseDto</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                           <li class="copyright">
+                                   Documentation generated using <a href="https://compodoc.github.io/compodoc/" target="_blank">
+                                               <img src="..//images/compodoc-vectorise.svg" class="img-responsive">
+                                   </a>
+                           </li>
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>AuthStore</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active">
+        <a href="#infos" id="infos-tab" role="tab" data-toggle="tab">Infos</a>
+    </li>
+    <li>
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab">Source</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="infos">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/auth/auth-store.ts</code>
+        </p>
+
+
+
+            <section>
+                <h3 id="methods">Methods</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b> setSession</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            <code>setSession(token: string, user: Usuario)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Establece la sesión del usuario guardando el token y sus datos</p>
+            </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>void</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b> cerrarSesion</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            <code>cerrarSesion()</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Cierra la sesión limpiando el almacenamiento y reseteando las señales</p>
+            </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>void</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> getUserFromStorage</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>getUserFromStorage()</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Recupera el usuario almacenado en sessionStorage al iniciar</p>
+            </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>Usuario</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+
+            <section>
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> _token</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-lock"></span><code>_token:     <code>WritableSignal&lt;string&gt;</code>
+            </bcode>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> _user</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-lock"></span><code>_user:     <code>WritableSignal&lt;Usuario&gt;</code>
+            </bcode>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier"></span> isAuthenticated</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-"></span><code>isAuthenticated:     <code>any</code>
+            </bcode>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier"></span> rol</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-"></span><code>rol:     <code>any</code>
+            </bcode>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> router</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-lock"></span><code>router:     <code><a href="https://angular.io/docs/ts/latest/api/router/index/Router-class.html" target="_blank" >Router</a></code>
+            </bcode>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier"></span> token</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-"></span><code>token:     <code>Signal&lt;string&gt;</code>
+            </bcode>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier"></span> usuario</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <span class="modifier-icon fa fa-"></span><code>usuario:     <code>Signal&lt;Usuario&gt;</code>
+            </bcode>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+    <div class="tab-pane fade tab-source-code" id="source">
+        <pre><code class="hljs javascript">import { Injectable, computed, signal, inject } from &#x27;@angular/core&#x27;;
+import { Router } from &quot;@angular/router&quot;;
+import { RolUsuario } from &#x27;./roles.enum&#x27;;
+
+export type Rol &#x3D; RolUsuario;
+
+export interface Usuario {
+  id: number | string;
+  nombres?: string;
+  apellidos?: string;
+  email: string;
+  rol?: string; // Usamos &#x27;rol&#x27; tal cual viene de tu API de NestJS
+  [key: string]: any;
+}
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class AuthStore {
+
+  private readonly router: Router &#x3D; inject(Router)
+  // Estado privado con Signals
+  private readonly _user &#x3D; signal&lt;Usuario | null&gt;(this.getUserFromStorage());
+  private readonly _token &#x3D; signal&lt;string | null&gt;(sessionStorage.getItem(&#x27;token&#x27;));
+
+  // Propiedades públicas de solo lectura
+  readonly usuario &#x3D; this._user.asReadonly();
+  readonly token &#x3D; this._token.asReadonly();
+  
+  // Señal computada para saber si el usuario está autenticado
+  readonly isAuthenticated &#x3D; computed(() &#x3D;&gt; !!this._token());
+  // Rol del usuario con sesión iniciada (o null si no hay sesión)
+  readonly rol &#x3D; computed(() &#x3D;&gt; (this._user()?.rol as Rol | undefined) ?? null);
+  /**
+   * Establece la sesión del usuario guardando el token y sus datos
+   */
+  setSession(token: string, user: Usuario): void {
+    sessionStorage.setItem(&#x27;token&#x27;, token);
+    sessionStorage.setItem(&#x27;user&#x27;, JSON.stringify(user));
+    this._token.set(token);
+    this._user.set(user);
+  }
+
+  /**
+   * Cierra la sesión limpiando el almacenamiento y reseteando las señales
+   */
+  cerrarSesion(): void {
+    sessionStorage.removeItem(&#x27;token&#x27;);
+    sessionStorage.removeItem(&#x27;user&#x27;);
+    this._token.set(null);
+    this._user.set(null);
+    this.router.navigateByUrl(&quot;/login&quot;);
+  }
+
+  /**
+   * Recupera el usuario almacenado en sessionStorage al iniciar
+   */
+  private getUserFromStorage(): Usuario | null {
+    const userStr &#x3D; sessionStorage.getItem(&#x27;user&#x27;);
+    if (userStr) {
+      try {
+        return JSON.parse(userStr);
+      } catch (e) {
+        console.error(&#x27;Error al parsear el usuario del sessionStorage&#x27;, e);
+        return null;
+      }
+    }
+    return null;
+  }
+}</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/search/search.js"></script>
+       <script src="../js/search/lunr.min.js"></script>
+       <script src="../js/search/search-lunr.js"></script>
+
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/highlight.pack.js"></script>
+       <script src="../js/libs/highlightjs-line-numbers.min.js"></script>
+       <script src="../js/search/search_index.js"></script>
+       <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                hljs.initHighlightingOnLoad();
+                hljs.initLineNumbersOnLoad();
+            });
+       </script>
+
+    </body>
+</html>
